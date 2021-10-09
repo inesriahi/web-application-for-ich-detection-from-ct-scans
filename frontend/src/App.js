@@ -22,6 +22,7 @@ function App() {
       .then((res) => {
         setImg(res.data.image);
         setIsImageLoaded(true);
+        console.log(JSON.parse(res.data.metadata))
         setMetadata(JSON.parse(res.data.metadata));
       })
       .catch((err) => console.error(err));
@@ -58,7 +59,7 @@ function App() {
         <img width="500" src={`data:image/png;base64,${img}`} />
       )}
 
-      <Modal isOpen={showMetaModel} onHide={() => setShowMetaModel(false)} size="lg">
+      <Modal isOpen={showMetaModel} onHide={() => setShowMetaModel(false)} size="xl">
         <ModalHeader closeButton>
           <h1>Dicom Metadata</h1>
         </ModalHeader>
