@@ -10,7 +10,7 @@ function App() {
   const [metadata, setMetadata] = useState({});
   const [showMetaModel, setShowMetaModel] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+ 
   const newDocument = () => {
     const uploadData = new FormData();
     uploadData.append("title", title);
