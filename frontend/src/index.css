@@ -1,0 +1,15 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    align-items: stretch;
+}
+
+.brain-img {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+#sidebar {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
