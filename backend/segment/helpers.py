@@ -19,3 +19,11 @@ def get_hounsfield_window(dataset, min_value, max_value):
             # set to level 
             windowed_image = min_value * np.ones((224, 224))
         return windowed_image
+
+def map_to_whole_image_range(windowd_image):
+    min_value =  np.min(windowd_image)
+    max_value = np.max(windowd_image)
+
+    adjusted_image = 255 * (windowd_image - min_value)/(max_value - min_value)
+
+    return adjusted_image
