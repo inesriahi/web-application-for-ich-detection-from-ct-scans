@@ -1,14 +1,13 @@
-import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Sidebar from "./components/Sidebar/index";
+import BodyCanvas from "./components/BodyCanvas";
+import Layout from "./components/Layout";
 // import UploadForm from "./components/Sidebar/UploadForm";
 
 function App() {
   return (
-    <div className="wrapper">
-      
-      <Sidebar />
-    </div>
+    <Layout>
+      <BodyCanvas />
+    </Layout>
   );
 }
 

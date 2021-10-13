@@ -3,11 +3,13 @@ import "../../index.css";
 import UploadForm from "./UploadForm";
 
 const Sidebar = () => {
-    return (
-        <div id="sidebar" className="d-flex bg-light">
-            <UploadForm />
-        </div>
-    )
+  return (
+    <div className="col-md-2 d-none d-md-block bg-light sidebar">
+      <div className="sidebar-sticky">
+          <UploadForm />
+      </div>
+    </div>
+  );
 };
 
 export default Sidebar;

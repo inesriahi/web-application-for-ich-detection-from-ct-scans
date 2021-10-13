@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 // import MetadataTable from "./components/MetadataTable";
-import { Button, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
+import { Button } from "reactstrap";
 import axios from "axios";
 import { imgActions } from "../../store";
+import MetadataModel from './MetadataModal/MetadataModal'
 import { useDispatch, useSelector } from "react-redux";
-import MetadataTable from "./MetadataModel/MetadataTable";
 
 const UploadForm = () => {
   const dispatch = useDispatch();
 
   const [img, setImg] = useState("");
   const [metadata, setMetadata] = useState({});
-  const [showMetaModel, setShowMetaModel] = useState(false);
+  const [showMetaModal, setShowMetaModal] = useState(false);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
-  const loadedImg = useSelector((state) => state.img.img);
-  console.log(isLoadedImage);
 
   const newDocument = () => {
     const uploadData = new FormData();
@@ -33,6 +31,7 @@ const UploadForm = () => {
   };
 
   return (
+    <>
     <div>
       <h3>Upload images with React</h3>
       <label>
@@ -49,35 +48,11 @@ const UploadForm = () => {
       </Button>
 
       {isLoadedImage && (
-        <div className="brain-img">
-          <img width="500" src={`data:image/png;base64,${loadedImg}`} />
-        </div>
+        <Button onClick={() => setShowMetaModal(true)}>Show MetaData</Button>
       )}
-
-      {isLoadedImage && (
-        <Button onClick={() => setShowMetaModel(true)}>Show MetaData</Button>
-      )}
-
-      <br />
-
-      <Modal
-        isOpen={showMetaModel}
-        onHide={() => setShowMetaModel(false)}
-        size="xl"
-      >
-        <ModalHeader closeButton>
-          <h1>Dicom Metadata</h1>
-        </ModalHeader>
-        <ModalBody>
-          <MetadataTable metadata={metadata} />
-        </ModalBody>
-        <ModalFooter>
-          <Button variant="secondary" onClick={() => setShowMetaModel(false)}>
-            Close
-          </Button>
-        </ModalFooter>
-      </Modal>
     </div>
+    <MetadataModel setShowMetaModal = {setShowMetaModal} metadata = {metadata} showMetaModal={showMetaModal} />
+    </>
   );
 };
 
