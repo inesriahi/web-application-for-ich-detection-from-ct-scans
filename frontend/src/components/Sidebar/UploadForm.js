@@ -20,7 +20,7 @@ const UploadForm = () => {
     const uploadData = new FormData();
     uploadData.append("dcmimg", img);
     uploadData.append("windowCenter", windowCenter);
-    uploadData.append("windowWidth", windowWidth)
+    uploadData.append("windowWidth", windowWidth);
     axios
       .post("http://localhost:8000/api/documents/", uploadData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -38,17 +38,18 @@ const UploadForm = () => {
     <>
       <Form>
         <FormGroup>
-          <h3>Upload images with React</h3>
           <div class="input-group mb-3">
             <div class="custom-file">
               <input
                 type="file"
                 accept="*/dicom,.dcm, image/dcm, */dcm, .dicom"
                 onChange={(event) => setImg(event.target.files[0])}
-                class="custom-file-input"
                 id="inputGroupFile02"
               />
-              <label class="custom-file-label" for="inputGroupFile02">
+              <label
+                className="custom-file-label bg-dark text-white file-upload-field"
+                for="inputGroupFile02"
+              >
                 {img && img.name}
                 {!img && "Upload Image..."}
               </label>
@@ -60,19 +61,19 @@ const UploadForm = () => {
             <div class="col">
               <input
                 type="number"
-                class="form-control"
                 placeholder="Window Center"
-                value = {windowCenter}
-                onChange = {(e) => setWindowCenter(e.target.value)}
+                value={windowCenter}
+                onChange={(e) => setWindowCenter(e.target.value)}
+                className="form-control bg-dark text-white"
               />
             </div>
             <div class="col">
               <input
                 type="number"
-                class="form-control"
+                className="form-control bg-dark text-white"
                 placeholder="Window Width"
-                value=  {windowWidth}
-                onChange = {(e) => setWindowWidth(e.target.value)}
+                value={windowWidth}
+                onChange={(e) => setWindowWidth(e.target.value)}
               />
             </div>
           </div>
