@@ -9,7 +9,7 @@ const Layout = (props) => {
       <div >
         <div className="row">
           <Sidebar />
-          <main className="main col-md-9 ml-sm-auto col-lg-10 px-4">
+          <main className="main mx-auto px-4">
             {props.children}
           </main>
         </div>
