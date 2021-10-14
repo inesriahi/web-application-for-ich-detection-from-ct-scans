@@ -19,6 +19,9 @@ class DocumentViewSet(viewsets.ModelViewSet):
  
     def create(self, request):
         img = request.data['dcmimg']
+        windowCenter = request.data['windowCenter']
+        windowWidth = request.data['windowWidth']
+
         # Document.objects.create(title = title, file=img)
         img.seek(0)
         ds = pydicom.dcmread(img)
@@ -27,7 +30,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
 
 
-
+        ################# IMAGE PREPARATION FOR SENDING ##################
         _, encoded_img = cv2.imencode('.png', np.asarray(stretched_image))
         coded_image = base64.b64encode(encoded_img).decode('utf-8')
         metadata = []

@@ -13,10 +13,14 @@ const UploadForm = () => {
   const [metadata, setMetadata] = useState({});
   const [showMetaModal, setShowMetaModal] = useState(false);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
+  const [windowCenter, setWindowCenter] = useState("");
+  const [windowWidth, setWindowWidth] = useState("");
 
   const newDocument = () => {
     const uploadData = new FormData();
     uploadData.append("dcmimg", img);
+    uploadData.append("windowCenter", windowCenter);
+    uploadData.append("windowWidth", windowWidth)
     axios
       .post("http://localhost:8000/api/documents/", uploadData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -58,6 +62,8 @@ const UploadForm = () => {
                 type="number"
                 class="form-control"
                 placeholder="Window Center"
+                value = {windowCenter}
+                onChange = {(e) => setWindowCenter(e.target.value)}
               />
             </div>
             <div class="col">
@@ -65,6 +71,8 @@ const UploadForm = () => {
                 type="number"
                 class="form-control"
                 placeholder="Window Width"
+                value=  {windowWidth}
+                onChange = {(e) => setWindowWidth(e.target.value)}
               />
             </div>
           </div>
