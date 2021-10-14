@@ -10,8 +10,8 @@
   box-sizing: border-box;
 }
 
-#root {
-  background-color: #000;
+#root{
+  background-color: #fff; /* To return it black later*/
 }
 
 #header {
