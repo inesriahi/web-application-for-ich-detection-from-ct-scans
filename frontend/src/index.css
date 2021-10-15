@@ -4,6 +4,7 @@
   --secondary-color: hsl(var(--secondary-color-constant), 50%);
   --secondary-color-darker: hsl(var(--secondary-color-constant), 40%);
   --secondary-color-lighter: hsl(var(--secondary-color-constant), 80%);
+  --marker-size: 10px;
 }
 
 * {
@@ -44,7 +45,7 @@
   height: 100%;
 }
 
-.brain-img img {
+.brain-img img, .brain-img .image-marker {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,6 +93,28 @@ input[type=number] {
 
 .form-control::placeholder {
     color: white !important;
+}
+
+.x-mark {
+    position: absolute;
+    width: var(--marker-size);
+    height: var(--marker-size);
+    pointer-events: none;
+}
+
+.x-mark:after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    content: "\274c";
+    font-size: var(--marker-size); 
+    color: #FFF;
+    line-height: 0;
+    text-align: center;
+    transform: translateX(-65%) translateY(-7%);
+    pointer-events: none;
 }
 
 /*
