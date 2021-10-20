@@ -11,8 +11,12 @@
   box-sizing: border-box;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 #root{
-  background-color: #fff; /* To return it black later*/
+  background-color: #000; /* To return it black later*/
 }
 
 #header {

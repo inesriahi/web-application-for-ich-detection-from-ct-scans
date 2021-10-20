@@ -27,3 +27,10 @@ def map_to_whole_image_range(windowd_image):
     adjusted_image = 255 * (windowd_image - min_value)/(max_value - min_value)
 
     return adjusted_image
+
+def encode_img_to_string(numpy_img):
+    import base64
+    import cv2
+    _, encoded_img = cv2.imencode('.png', np.asarray(numpy_img))
+    coded_image = base64.b64encode(encoded_img).decode('utf-8')
+    return coded_image

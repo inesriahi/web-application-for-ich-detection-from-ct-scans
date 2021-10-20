@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { Button } from "reactstrap";
 import ImageMarker from "./ImageMarker";
+import axios from "axios";
 
 const CustomMarker = () => {
   return <div className="x-mark"></div>;
@@ -12,6 +14,15 @@ const BodyCanvas = () => {
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   const [marksArray, setMarksArray] = useState([]);
   const [markersActualCoor, setMarkersActualCoor] = useState([]);
+
+  const sendMerkersArrayHandler = () => {
+    axios
+      .post("http://localhost:8000/api/segment/", {
+        coors: markersActualCoor,
+        img: loadedImg,
+      })
+      .then((res) => console.log(res));
+  };
 
   return (
     <>
@@ -45,6 +56,10 @@ const BodyCanvas = () => {
           />
         </div>
       )}
+
+      <Button block outline onClick={sendMerkersArrayHandler}>
+        Segment
+      </Button>
     </>
   );
 };

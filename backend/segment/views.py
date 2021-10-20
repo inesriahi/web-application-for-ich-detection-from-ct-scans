@@ -3,12 +3,11 @@ from .models import Document
 from .serializers import DocumentSerializer
 from rest_framework import viewsets
 from django.http import HttpResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 import pydicom
-import base64
 import json
-import cv2
-import numpy as np
-from .helpers import get_hounsfield_window, map_to_whole_image_range
+from .helpers import *
 import matplotlib.pyplot as plt
 
 
@@ -28,11 +27,9 @@ class DocumentViewSet(viewsets.ModelViewSet):
         windowd_image = get_hounsfield_window(ds, 0, 120)
         stretched_image = map_to_whole_image_range(windowd_image)
 
-
-
         ################# IMAGE PREPARATION FOR SENDING ##################
-        _, encoded_img = cv2.imencode('.png', np.asarray(stretched_image))
-        coded_image = base64.b64encode(encoded_img).decode('utf-8')
+        # _, encoded_img = cv2.imencode('.png', np.asarray(stretched_image))
+        coded_image = encode_img_to_string(stretched_image)
         metadata = []
         for d in ds:
             if d.description() == 'Pixel Data':
@@ -45,3 +42,14 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
         return HttpResponse(json.dumps(response), status=200)
         
+
+@api_view(['POST'])
+def segment_img_view(request):
+    if request.method.upper() == 'POST':
+
+        #################### CODE FOR SEGMENTATION IS HERE ########################
+
+        # Encode the segmented image
+
+        # Send the segmented image
+        return Response({"ReqData": request.data})
