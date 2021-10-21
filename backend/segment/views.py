@@ -47,10 +47,21 @@ class DocumentViewSet(viewsets.ModelViewSet):
 def segment_img_view(request):
     if request.method.upper() == 'POST':
         coors = request.data['coors']
-        endoded_img = request.data['img']
+        encoded_img = request.data['img']['img']
+        img_size = request.data['img']['size']
+        window = 0
         #################### CODE FOR SEGMENTATION IS HERE ########################
-        print(request.data)
+        # print(request.data)
+
+        image = decode_string_to_image(encoded_img)
+        segmented_image = region_growing_segmentation(image,coors,window)
+        print(segmented_image)
+        
+        segmented_image = map_to_whole_image_range(segmented_image)
         # Encode the segmented image
+        encoded_segmentation =encode_img_to_string(segmented_image)
 
         # Send the segmented image
-        return Response({"ReqData": request.data})
+        return Response({"segmentation": encoded_segmentation})
+
+

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "reactstrap";
 import ImageMarker from "./ImageMarker";
+import {imgActions} from '../../store'
 import axios from "axios";
 
 const CustomMarker = () => {
@@ -21,7 +22,10 @@ const SegmentCanvas = () => {
         coors: markersActualCoor,
         img: {img: loadedImg, size: [imgRef.current.naturalWidth, imgRef.current.naturalHeight]},
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        dispatch(imgActions.setImg(res.data.segmentation))
+        console.log(res.data.segmentation)
+      });
   };
 
   return (
