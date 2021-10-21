@@ -84,3 +84,24 @@ def region_growing_segmentation(image, coors,window):
     npa_segmentation = sitk.GetArrayFromImage(seg_implicit_thresholds_clean).reshape(512,-1)
 
     return npa_segmentation
+
+
+def merge_image(img, segmentation):
+    import cv2
+    # img = np.float32(img)
+    segmentation = np.float32(segmentation)
+    img = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB) 
+    segmentation = cv2.cvtColor(segmentation,cv2.COLOR_GRAY2RGB)
+    segmentation[:,:,0] = 0
+    segmentation[:,:,2] = 0
+
+    print('shape:_________',img.shape)
+    print('shape:_________',segmentation.shape)
+    # merged = cv2.merge(img,segmentation)
+
+    # ret, segmentation_mask = cv2.threshold(segmentation[:,:,0], 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
+    merged = img.copy()
+    merged[np.where(segmentation == 255)] = segmentation[np.where(segmentation == 255)]
+    print(img.min(), img.max())
+    print(segmentation.min(), segmentation.max())
+    return merged
