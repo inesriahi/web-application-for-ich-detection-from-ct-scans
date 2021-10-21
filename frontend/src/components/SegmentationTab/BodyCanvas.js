@@ -19,7 +19,7 @@ const BodyCanvas = () => {
     axios
       .post("http://localhost:8000/api/segment/", {
         coors: markersActualCoor,
-        img: loadedImg,
+        img: {img: loadedImg, size: [imgRef.current.naturalWidth, imgRef.current.naturalHeight]},
       })
       .then((res) => console.log(res));
   };

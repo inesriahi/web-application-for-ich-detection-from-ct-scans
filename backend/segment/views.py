@@ -46,9 +46,10 @@ class DocumentViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 def segment_img_view(request):
     if request.method.upper() == 'POST':
-
+        coors = request.data['coors']
+        endoded_img = request.data['img']
         #################### CODE FOR SEGMENTATION IS HERE ########################
-
+        print(request.data)
         # Encode the segmented image
 
         # Send the segmented image
