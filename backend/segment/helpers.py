@@ -36,3 +36,12 @@ def encode_img_to_string(numpy_img):
     coded_image = base64.b64encode(encoded_img).decode('utf-8')
     return coded_image
 
+def decode_string_to_image(coded_image):
+    import cv2
+    import base64
+    # decoded_image = base64.b64decode(coded_image)
+    decoded_image = np.fromstring(base64.b64decode(coded_image), np.uint8)
+    decoded_image = cv2.imdecode(decoded_image, cv2.IMREAD_GRAYSCALE)
+    print(decoded_image)
+    print("shhhhhhhape:",decoded_image.shape)
+    return decoded_image
