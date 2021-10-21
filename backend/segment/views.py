@@ -56,9 +56,12 @@ def segment_img_view(request):
         image = decode_string_to_image(encoded_img)
         segmented_image = region_growing_segmentation(image,coors,window)
         print(segmented_image)
+        
+        segmented_image = map_to_whole_image_range(segmented_image)
         # Encode the segmented image
+        encoded_segmentation =encode_img_to_string(segmented_image)
 
         # Send the segmented image
-        return Response({"ReqData": request.data})
+        return Response({"segmentation": encoded_segmentation})
 
 
