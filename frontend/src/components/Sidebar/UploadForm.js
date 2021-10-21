@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form } from "reactstrap";
 import axios from "axios";
-import { imgActions } from "../../store";
+import { imgActions, segmentedActions } from "../../store";
 import MetadataModel from "./MetadataModal/MetadataModal";
 import { FormGroup } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +28,9 @@ const UploadForm = () => {
       .then((res) => {
         // console.log(res.data.image);
         dispatch(imgActions.setImg(res.data.image));
+        dispatch(segmentedActions.setImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
+        dispatch(segmentedActions.setIsLoadedImg(true));
         setMetadata(JSON.parse(res.data.metadata));
       })
       .catch((err) => console.error(err));
