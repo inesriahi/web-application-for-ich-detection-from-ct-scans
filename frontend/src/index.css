@@ -121,6 +121,28 @@ input[type=number] {
     pointer-events: none;
 }
 
+/* 
+.nav-link {
+  background-color: transparent ;
+  color: var()
+  --secondary-color-darker: hsl(var(--secondary-color-constant), 40%);
+  --secondary-color-lighter: hsl(var(--secondary-color-constant), 80%);
+} */
+
+
+.nav-link {
+  color: #fff;
+}
+.nav-link.active{
+  color: #fff;
+  background-color: var(--secondary-color-darker) !important;
+}
+
+.nav-link:hover,  .nav-link.active:hover{
+  color: var(--secondary-color-lighter);
+}
+
+
 /*
 .wrapper {
     display: grid;

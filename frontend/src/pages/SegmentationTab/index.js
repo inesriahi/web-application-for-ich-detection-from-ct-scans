@@ -8,7 +8,7 @@ const CustomMarker = () => {
   return <div className="x-mark"></div>;
 };
 
-const BodyCanvas = () => {
+const SegmentCanvas = () => {
   const imgRef = useRef();
   const loadedImg = useSelector((state) => state.img.img);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
@@ -64,4 +64,4 @@ const BodyCanvas = () => {
   );
 };
 
-export default BodyCanvas;
+export default SegmentCanvas;
