@@ -43,15 +43,15 @@ def decode_string_to_image(coded_image):
     decoded_image = np.fromstring(base64.b64decode(coded_image), np.uint8)
     decoded_image = cv2.imdecode(decoded_image, cv2.IMREAD_GRAYSCALE)
     print(decoded_image)
-    print("shhhhhhhape:",decoded_image.shape)
+    print("______shape:",decoded_image.shape)
     return decoded_image
 
-def region_growing_segmentation(image, coors):
+def region_growing_segmentation(image, coors,window):
     import SimpleITK as sitk
     T1_WINDOW_LEVEL = (200,80)
+
     # Read image
     img = sitk.GetImageFromArray(image)
-    # print(img_T1)
     img_255 = sitk.Cast(sitk.IntensityWindowing(img, 
                                             windowMinimum=T1_WINDOW_LEVEL[1]-T1_WINDOW_LEVEL[0]/2.0, 
                                             windowMaximum=T1_WINDOW_LEVEL[1]+T1_WINDOW_LEVEL[0]/2.0), 
@@ -60,7 +60,27 @@ def region_growing_segmentation(image, coors):
     points =[]
     for i in coors:
         points.append((i['x'],i['y'],0))
-    print(points)
+    print("______coors: ",points)
     initial_seed_point_indexes = points
 
+    # ConnectedThreshold
+    seg_explicit_thresholds = sitk.ConnectedThreshold(img, seedList=initial_seed_point_indexes, lower=20, upper=40)
     
+    # ConfidenceConnected, the region growing algorithm 
+    seg_implicit_thresholds = sitk.ConfidenceConnected(img, seedList=initial_seed_point_indexes,
+                                                   numberOfIterations=0,
+                                                   multiplier=2,
+                                                   initialNeighborhoodRadius=1,
+                                                   replaceValue=1)
+
+    # BinaryMorphologicalClosing, Cleaning
+    vectorRadius=(10,10,10)
+    kernel=sitk.sitkBall
+    seg_implicit_thresholds_clean = sitk.BinaryMorphologicalClosing(seg_implicit_thresholds, 
+                                                                    vectorRadius,
+                                                                    kernel)
+
+    # Convert image to array
+    npa_segmentation = sitk.GetArrayFromImage(seg_implicit_thresholds_clean).reshape(512,-1)
+
+    return npa_segmentation

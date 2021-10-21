@@ -49,11 +49,13 @@ def segment_img_view(request):
         coors = request.data['coors']
         encoded_img = request.data['img']['img']
         img_size = request.data['img']['size']
+        window = 0
         #################### CODE FOR SEGMENTATION IS HERE ########################
         # print(request.data)
 
         image = decode_string_to_image(encoded_img)
-        region_growing_segmentation(image, coors)
+        segmented_image = region_growing_segmentation(image,coors,window)
+        print(segmented_image)
         # Encode the segmented image
 
         # Send the segmented image
