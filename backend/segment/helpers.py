@@ -45,3 +45,22 @@ def decode_string_to_image(coded_image):
     print(decoded_image)
     print("shhhhhhhape:",decoded_image.shape)
     return decoded_image
+
+def region_growing_segmentation(image, coors):
+    import SimpleITK as sitk
+    T1_WINDOW_LEVEL = (200,80)
+    # Read image
+    img = sitk.GetImageFromArray(image)
+    # print(img_T1)
+    img_255 = sitk.Cast(sitk.IntensityWindowing(img, 
+                                            windowMinimum=T1_WINDOW_LEVEL[1]-T1_WINDOW_LEVEL[0]/2.0, 
+                                            windowMaximum=T1_WINDOW_LEVEL[1]+T1_WINDOW_LEVEL[0]/2.0), 
+                                            sitk.sitkUInt8)
+    # Get coordinates
+    points =[]
+    for i in coors:
+        points.append((i['x'],i['y'],0))
+    print(points)
+    initial_seed_point_indexes = points
+
+    
