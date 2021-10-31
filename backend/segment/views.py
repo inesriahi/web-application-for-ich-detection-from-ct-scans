@@ -21,10 +21,15 @@ class DocumentViewSet(viewsets.ModelViewSet):
         windowCenter = request.data['windowCenter']
         windowWidth = request.data['windowWidth']
 
+        min_value,max_value= get_min_max_of_window_value(windowCenter,windowWidth)
+
         # Document.objects.create(title = title, file=img)
         img.seek(0)
         ds = pydicom.dcmread(img)
-        windowd_image = get_hounsfield_window(ds, 0, 120)
+        windowd_image = get_hounsfield_window(ds, min_value, max_value)
+        print("window center value="+str(windowCenter)+"window width value="+str(windowWidth))
+        print("window min value="+str(min_value)+"window max value="+str(max_value))
+        
         stretched_image = map_to_whole_image_range(windowd_image)
 
         ################# IMAGE PREPARATION FOR SENDING ##################
