@@ -9,14 +9,15 @@ import pydicom
 import json
 from .helpers import *
 import matplotlib.pyplot as plt
-
-
+ 
+img_dcom = None
 # Create your views here.
 class DocumentViewSet(viewsets.ModelViewSet):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
  
     def create(self, request):
+        global img_dcom
         img = request.data['dcmimg']
         windowCenter = request.data['windowCenter']
         windowWidth = request.data['windowWidth']
@@ -25,10 +26,10 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
         # Document.objects.create(title = title, file=img)
         img.seek(0)
-        ds = pydicom.dcmread(img)
-        windowd_image = get_hounsfield_window(ds, min_value, max_value)
-        print("window center value="+str(windowCenter)+"window width value="+str(windowWidth))
-        print("window min value="+str(min_value)+"window max value="+str(max_value))
+        img_dcom = pydicom.dcmread(img)
+        windowd_image = get_hounsfield_window(img_dcom, min_value, max_value)
+        # print("window center value="+str(windowCenter)+"window width value="+str(windowWidth))
+        # print("window min value="+str(min_value)+"window max value="+str(max_value))
         
         stretched_image = map_to_whole_image_range(windowd_image)
 
@@ -36,11 +37,12 @@ class DocumentViewSet(viewsets.ModelViewSet):
         # _, encoded_img = cv2.imencode('.png', np.asarray(stretched_image))
         coded_image = encode_img_to_string(stretched_image)
         metadata = []
-        for d in ds:
+        # print(type(img_dcom))
+        for d in img_dcom:
             if d.description() == 'Pixel Data':
                 continue
             metadata.append({'tag': str(d.tag), 'name': str(d.description()), 'value': str(d.value), 'vr': str(d.VR)})
-
+        # print(img_dcom)
         response = {'metadata': json.dumps(metadata),
                     'image': coded_image
                     }
@@ -58,7 +60,9 @@ def segment_img_view(request):
         #################### CODE FOR SEGMENTATION IS HERE ########################
         # print(request.data)
 
-        image = decode_string_to_image(encoded_img)
+        # image = decode_string_to_image(encoded_img)
+        image = img_dcom.pixel_array
+        # print(img_dcom.pixel_array)
         segmented_image = region_growing_segmentation(image,coors,window)
         # print(segmented_image)
 

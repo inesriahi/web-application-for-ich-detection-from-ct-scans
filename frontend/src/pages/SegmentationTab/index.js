@@ -4,7 +4,7 @@ import { Button } from "reactstrap";
 import ImageMarker from "./ImageMarker";
 import {segmentedActions} from '../../store'
 import axios from "axios";
-
+ 
 const CustomMarker = () => {
   return <div className="x-mark"></div>;
 };

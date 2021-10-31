@@ -56,8 +56,8 @@ def decode_string_to_image(coded_image):
     # decoded_image = base64.b64decode(coded_image)
     decoded_image = np.fromstring(base64.b64decode(coded_image), np.uint8)
     decoded_image = cv2.imdecode(decoded_image, cv2.IMREAD_GRAYSCALE)
-    print(decoded_image)
-    print("______shape:",decoded_image.shape)
+    # print(decoded_image)
+    # print("______shape:",decoded_image.shape)
     return decoded_image
 
 def region_growing_segmentation(image, coors,window):
@@ -74,7 +74,7 @@ def region_growing_segmentation(image, coors,window):
     points =[]
     for i in coors:
         points.append((i['x'],i['y'],0))
-    print("______coors: ",points)
+    # print("______coors: ",points)
     initial_seed_point_indexes = points
 
     # ConnectedThreshold
@@ -109,13 +109,13 @@ def merge_image(img, segmentation):
     segmentation[:,:,0] = 0
     segmentation[:,:,2] = 0
 
-    print('shape:_________',img.shape)
-    print('shape:_________',segmentation.shape)
+    # print('shape:_________',img.shape)
+    # print('shape:_________',segmentation.shape)
     # merged = cv2.merge(img,segmentation)
 
     # ret, segmentation_mask = cv2.threshold(segmentation[:,:,0], 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
     merged = img.copy()
     merged[np.where(segmentation == 255)] = segmentation[np.where(segmentation == 255)]
-    print(img.min(), img.max())
-    print(segmentation.min(), segmentation.max())
+    # print(img.min(), img.max())
+    # print(segmentation.min(), segmentation.max())
     return merged

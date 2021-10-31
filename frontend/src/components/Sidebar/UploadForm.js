@@ -15,7 +15,7 @@ const UploadForm = () => {
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   const [windowCenter, setWindowCenter] = useState("");
   const [windowWidth, setWindowWidth] = useState("");
-
+  
   const newDocument = () => {
     const uploadData = new FormData();
     uploadData.append("dcmimg", img);
