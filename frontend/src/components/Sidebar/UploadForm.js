@@ -13,8 +13,8 @@ const UploadForm = () => {
   const [metadata, setMetadata] = useState({});
   const [showMetaModal, setShowMetaModal] = useState(false);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
-  const [windowCenter, setWindowCenter] = useState("40");
-  const [windowWidth, setWindowWidth] = useState("80");
+  const [windowCenter, setWindowCenter] = useState("");
+  const [windowWidth, setWindowWidth] = useState("");
   
   const newDocument = () => {
     const uploadData = new FormData();

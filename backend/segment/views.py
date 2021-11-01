@@ -11,8 +11,8 @@ from .helpers import *
 import matplotlib.pyplot as plt
  
 img_dcom = None
-windowCenter = 0
-windowWidth = 120
+windowCenter = None
+windowWidth = None
 # Create your views here.
 class DocumentViewSet(viewsets.ModelViewSet):
     queryset = Document.objects.all()
@@ -28,8 +28,9 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
         # print("window center value="+str(windowCenter)+"window width value="+str(windowWidth))
         # print("window min value="+str(min_value)+"window max value="+str(max_value))
-        
+        print(np.max(img_dcom.pixel_array), np.min(img_dcom.pixel_array))
         stretched_image = map_to_whole_image_range(img_dcom.pixel_array)
+        print(np.max(stretched_image), np.min(stretched_image))
 
         ################# IMAGE PREPARATION FOR SENDING ##################
         # _, encoded_img = cv2.imencode('.png', np.asarray(stretched_image))
@@ -57,12 +58,19 @@ def segment_img_view(request):
         #################### CODE FOR SEGMENTATION IS HERE ########################
         # print(request.data)
         print(windowCenter,windowWidth)
-        min_value,max_value= get_min_max_of_window_value(windowCenter,windowWidth)
-        windowd_image = get_hounsfield_window(img_dcom, min_value, max_value)
+        if windowCenter and windowWidth:
+            min_value,max_value= get_min_max_of_window_value(windowCenter,windowWidth)
+            windowd_image = get_hounsfield_window(img_dcom, min_value, max_value)
+        elif windowCenter or windowWidth:
+            # error message can't set only one value
+            pass
+        else:
+            windowd_image = img_dcom.pixel_array
+
         # image = decode_string_to_image(encoded_img)
-        image = img_dcom.pixel_array
+        # image = img_dcom.pixel_array
         # print(img_dcom.pixel_array)
-        segmented_image = region_growing_segmentation(image,coors,(windowWidth, windowCenter))
+        segmented_image = region_growing_segmentation(windowd_image,coors)
         # print(segmented_image)
 
         segmented_image = map_to_whole_image_range(segmented_image)

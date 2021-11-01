@@ -24,7 +24,7 @@ def map_to_whole_image_range(windowd_image):
     min_value =  np.min(windowd_image)
     max_value = np.max(windowd_image)
 
-    adjusted_image = 255 * (windowd_image - min_value)/(max_value - min_value)
+    adjusted_image = 255.0 * (windowd_image - min_value)/(max_value - min_value)
 
     return adjusted_image
 
@@ -60,16 +60,16 @@ def decode_string_to_image(coded_image):
     # print("______shape:",decoded_image.shape)
     return decoded_image
 
-def region_growing_segmentation(image, coors,ww_wc):
+def region_growing_segmentation(image, coors):
     import SimpleITK as sitk
-    T1_WINDOW_LEVEL = ww_wc
+    # T1_WINDOW_LEVEL = ww_wc
 
     # Read image
     img = sitk.GetImageFromArray(image)
-    img_255 = sitk.Cast(sitk.IntensityWindowing(img, 
-                                            windowMinimum=T1_WINDOW_LEVEL[1]-T1_WINDOW_LEVEL[0]/2.0, 
-                                            windowMaximum=T1_WINDOW_LEVEL[1]+T1_WINDOW_LEVEL[0]/2.0), 
-                                            sitk.sitkUInt8)
+    # img_255 = sitk.Cast(sitk.IntensityWindowing(img, 
+    #                                         windowMinimum=T1_WINDOW_LEVEL[1]-T1_WINDOW_LEVEL[0]/2.0, 
+    #                                         windowMaximum=T1_WINDOW_LEVEL[1]+T1_WINDOW_LEVEL[0]/2.0), 
+    #                                         sitk.sitkUInt8)
     # Get coordinates
     points =[]
     for i in coors:
@@ -95,7 +95,7 @@ def region_growing_segmentation(image, coors,ww_wc):
                                                                     kernel)
 
     # Convert image to array
-    npa_segmentation = sitk.GetArrayFromImage(seg_implicit_thresholds_clean).reshape(512,-1)
+    npa_segmentation = sitk.GetArrayFromImage(seg_implicit_thresholds_clean).reshape(image.shape[0],image.shape[1])
 
     return npa_segmentation
 
