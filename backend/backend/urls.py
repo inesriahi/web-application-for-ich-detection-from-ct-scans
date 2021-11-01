@@ -11,6 +11,7 @@ router.register(r'documents', views.DocumentViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/segment/', views.segment_img_view),
+    path('api/windowing/', views.windowing_view),
     path('api/', include(router.urls))
     
 ]

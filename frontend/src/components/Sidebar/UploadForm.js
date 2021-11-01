@@ -13,14 +13,14 @@ const UploadForm = () => {
   const [metadata, setMetadata] = useState({});
   const [showMetaModal, setShowMetaModal] = useState(false);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
-  const [windowCenter, setWindowCenter] = useState("");
-  const [windowWidth, setWindowWidth] = useState("");
+  const [windowCenter, setWindowCenter] = useState("40");
+  const [windowWidth, setWindowWidth] = useState("80");
   
   const newDocument = () => {
     const uploadData = new FormData();
     uploadData.append("dcmimg", img);
-    uploadData.append("windowCenter", windowCenter);
-    uploadData.append("windowWidth", windowWidth);
+    // uploadData.append("windowCenter", windowCenter);
+    // uploadData.append("windowWidth", windowWidth);
     axios
       .post("http://localhost:8000/api/documents/", uploadData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -35,6 +35,19 @@ const UploadForm = () => {
       })
       .catch((err) => console.error(err));
   };
+
+  const window_handler = () => {
+    axios.post("http://localhost:8000/api/windowing/", {
+      "windowCenter": windowCenter,
+      "windowWidth": windowWidth
+    }).then((res) => {
+      // console.log(res.data.image);
+      dispatch(imgActions.setImg(res.data.image));
+      dispatch(segmentedActions.setImg(res.data.image));
+      dispatch(imgActions.setIsLoadedImg(true));
+      dispatch(segmentedActions.setIsLoadedImg(true));
+    }).catch((err) => console.error(err));
+  }
 
   return (
     <>
@@ -57,6 +70,9 @@ const UploadForm = () => {
               </label>
             </div>
           </div>
+          <Button block id="" className="mt-3" onClick={() => newDocument()}>
+            Upload Image
+          </Button>
 
           {/* Setting window center and window width*/}
           <div class="form-row">
@@ -79,10 +95,11 @@ const UploadForm = () => {
               />
             </div>
           </div>
-
-          <Button block id="" className="mt-3" onClick={() => newDocument()}>
-            Upload Image
+          <Button block id="" className="mt-3" onClick={() => window_handler()}>
+            Update
           </Button>
+
+          
 
           {isLoadedImage && (
             <Button block outline onClick={() => setShowMetaModal(true)}>

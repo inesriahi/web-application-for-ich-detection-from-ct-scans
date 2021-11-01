@@ -37,8 +37,8 @@ def encode_img_to_string(numpy_img):
     return coded_image
 
 def get_min_max_of_window_value(window_center, window_width):
-    min_value= int(window_center) - (int(window_width) // 2)
-    max_value= int(window_center) + (int(window_width) //2 )
+    min_value= window_center - (window_width // 2)
+    max_value= window_center + (window_width //2 )
     return min_value,max_value
 
 def window_image(img, window_center, window_width,IMAGE_SIZES):
@@ -60,9 +60,9 @@ def decode_string_to_image(coded_image):
     # print("______shape:",decoded_image.shape)
     return decoded_image
 
-def region_growing_segmentation(image, coors,window):
+def region_growing_segmentation(image, coors,ww_wc):
     import SimpleITK as sitk
-    T1_WINDOW_LEVEL = (200,80)
+    T1_WINDOW_LEVEL = ww_wc
 
     # Read image
     img = sitk.GetImageFromArray(image)
@@ -102,7 +102,7 @@ def region_growing_segmentation(image, coors,window):
 
 def merge_image(img, segmentation):
     import cv2
-    # img = np.float32(img)
+    img = np.float32(img)
     segmentation = np.float32(segmentation)
     img = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB) 
     segmentation = cv2.cvtColor(segmentation,cv2.COLOR_GRAY2RGB)

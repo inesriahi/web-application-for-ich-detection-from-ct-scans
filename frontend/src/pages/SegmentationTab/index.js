@@ -21,7 +21,7 @@ const SegmentCanvas = () => {
     axios
       .post("http://localhost:8000/api/segment/", {
         coors: markersActualCoor,
-        img: {img: loadedImg, size: [imgRef.current.naturalWidth, imgRef.current.naturalHeight]},
+        // img: {img: loadedImg, size: [imgRef.current.naturalWidth, imgRef.current.naturalHeight]},
       })
       .then((res) => {
         dispatch(segmentedActions.setImg(res.data.segmentation))
