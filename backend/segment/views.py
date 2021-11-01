@@ -66,14 +66,15 @@ def segment_img_view(request):
         # print(segmented_image)
 
         segmented_image = map_to_whole_image_range(segmented_image)
+        windowd_image = map_to_whole_image_range(windowd_image)
                 
         # merged = map_to_whole_image_range(merged)
-        print(windowd_image.shape ,segmented_image.shape)
+        # print(windowd_image.shape ,segmented_image.shape)
         merged = merge_image(windowd_image, segmented_image)
         merged = encode_img_to_string(merged)
 
         # Encode the segmented image
-        encoded_segmentation =encode_img_to_string(segmented_image)
+        # encoded_segmentation =encode_img_to_string(segmented_image)
         
         # Send the segmented image
         return Response({"segmentation": merged}) #encoded_segmentation
