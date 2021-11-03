@@ -81,6 +81,9 @@ def segment_img_view(request):
         merged = merge_image(windowd_image, segmented_image)
         merged = encode_img_to_string(merged)
 
+        features = featureExtractor(windowd_image, segmented_image)
+        print(features)
+
         # Encode the segmented image
         # encoded_segmentation =encode_img_to_string(segmented_image)
         
@@ -100,3 +103,4 @@ def windowing_view(request):
     response = {'image': coded_image}
         
     return HttpResponse(json.dumps(response), status=200)
+

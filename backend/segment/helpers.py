@@ -119,3 +119,35 @@ def merge_image(img, segmentation):
     # print(img.min(), img.max())
     # print(segmentation.min(), segmentation.max())
     return merged
+
+
+def array_to_nrrd(array_image,filename):
+    import nrrd
+    # Write to a NRRD file
+    nrrd.write(filename, array_image)
+    # Read the data back from file
+    mask, header = nrrd.read(filename)
+    return mask
+
+
+def featureExtractor(original, mask):
+    import six
+    import radiomics
+    from radiomics import featureextractor  # This module is used for interaction with pyradiomics
+
+    array_to_nrrd(original,'original.nrrd')
+    array_to_nrrd(mask, 'segmentation.nrrd')
+
+    # settings = {'label': 2}
+    # extractor = radiomics.featureextractor.RadiomicsFeatureExtractor(additionalInfo=True, **settings)
+
+    extractor = featureextractor.RadiomicsFeatureExtractor()
+
+    result = extractor.execute('original.nrrd', 'segmentation.nrrd')
+    
+    Energy = float(result['original_firstorder_Energy'])
+    Contrast = float(result['original_glcm_Contrast'])
+    Autocorrelation = float(result['original_glcm_Autocorrelation'])
+    Homogeneity = float(result['original_firstorder_Uniformity'])
+    
+    return Energy, Contrast, Autocorrelation, Homogeneity # or return results 
