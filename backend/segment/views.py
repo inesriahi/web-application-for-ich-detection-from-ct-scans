@@ -69,20 +69,17 @@ def segment_img_view(request):
 
         # image = decode_string_to_image(encoded_img)
         # image = img_dcom.pixel_array
-        # print(img_dcom.pixel_array)
+
         segmented_image = region_growing_segmentation(windowd_image,coors)
-        # print(segmented_image)
+        # Features Extraction
+        features = featureExtractor(windowd_image, segmented_image)
+        print(features)
 
         segmented_image = map_to_whole_image_range(segmented_image)
         windowd_image = map_to_whole_image_range(windowd_image)
-                
-        # merged = map_to_whole_image_range(merged)
-        # print(windowd_image.shape ,segmented_image.shape)
+
         merged = merge_image(windowd_image, segmented_image)
         merged = encode_img_to_string(merged)
-
-        features = featureExtractor(windowd_image, segmented_image)
-        print(features)
 
         # Encode the segmented image
         # encoded_segmentation =encode_img_to_string(segmented_image)
