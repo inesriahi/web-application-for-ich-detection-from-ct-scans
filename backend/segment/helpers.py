@@ -142,6 +142,7 @@ def featureExtractor(original, mask):
     # extractor = radiomics.featureextractor.RadiomicsFeatureExtractor(additionalInfo=True, **settings)
 
     extractor = featureextractor.RadiomicsFeatureExtractor()
+    extractor.enableFeatureClassByName('shape2D') #enable shape2D instead of shape
 
     result = extractor.execute('original.nrrd', 'segmentation.nrrd')
     
@@ -149,5 +150,9 @@ def featureExtractor(original, mask):
     Contrast = float(result['original_glcm_Contrast'])
     Autocorrelation = float(result['original_glcm_Autocorrelation'])
     Homogeneity = float(result['original_firstorder_Uniformity'])
-    
-    return Energy, Contrast, Autocorrelation, Homogeneity # or return results 
+    # store in new dic
+    labels = ['Energy', 'Contrast', 'Autocorrelation', 'Homogeneity']
+    values = [Energy, Contrast, Autocorrelation, Homogeneity]
+    features = dict(zip(labels, values))
+
+    return features # or return results 
