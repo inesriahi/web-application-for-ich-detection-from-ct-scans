@@ -1,19 +1,21 @@
 import React from "react";
 import Sidebar from "./Sidebar";
-import Topbar from "./Topbar/Topbar";
+import Topbar from "./Topbar";
+import Toolbar from "./Toolbar";
+import RightSidebar from "./RightSidebar";
 
 const Layout = (props) => {
   return (
     <>
-      <Topbar />
-      <div >
-        <div className="row">
-          <Sidebar />
-          <main className="main mx-auto px-4">
-            {props.children}
-          </main>
-        </div>
-      </div>
+      <Sidebar />
+      <section className="main">
+        <Topbar />
+        <RightSidebar />
+        <Toolbar />
+        <main className="main-content">
+          <div class="content">{props.children}</div>
+        </main>
+      </section>
     </>
   );
 };
