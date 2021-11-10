@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Form } from "reactstrap";
 import axios from "axios";
 import { imgActions, segmentedActions } from "../../../store";
@@ -11,14 +11,15 @@ const UploadForm = () => {
 
   const [img, setImg] = useState("");
   const [metadata, setMetadata] = useState({});
-  const [showMetaModal, setShowMetaModal] = useState(false);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   const [windowCenter, setWindowCenter] = useState("");
   const [windowWidth, setWindowWidth] = useState("");
-  
-  const newDocument = () => {
+
+  const hiddenFileInput = React.useRef();
+
+  const imgUploader = (image) => {
     const uploadData = new FormData();
-    uploadData.append("dcmimg", img);
+    uploadData.append("dcmimg", image);
     // uploadData.append("windowCenter", windowCenter);
     // uploadData.append("windowWidth", windowWidth);
     axios
@@ -31,36 +32,54 @@ const UploadForm = () => {
         dispatch(segmentedActions.setImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoadedImg(true));
-        setMetadata(JSON.parse(res.data.metadata));
+        dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
       })
       .catch((err) => console.error(err));
   };
 
   const window_handler = () => {
-    axios.post("http://localhost:8000/api/windowing/", {
-      "windowCenter": windowCenter,
-      "windowWidth": windowWidth
-    }).then((res) => {
-      // console.log(res.data.image);
-      dispatch(imgActions.setImg(res.data.image));
-      dispatch(segmentedActions.setImg(res.data.image));
-      dispatch(imgActions.setIsLoadedImg(true));
-      dispatch(segmentedActions.setIsLoadedImg(true));
-    }).catch((err) => console.error(err));
-  }
+    axios
+      .post("http://localhost:8000/api/windowing/", {
+        windowCenter: windowCenter,
+        windowWidth: windowWidth,
+      })
+      .then((res) => {
+        // console.log(res.data.image);
+        dispatch(imgActions.setImg(res.data.image));
+        dispatch(segmentedActions.setImg(res.data.image));
+        dispatch(imgActions.setIsLoadedImg(true));
+        dispatch(segmentedActions.setIsLoadedImg(true));
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <>
-      <Form>
+      <li>
+        <input
+          ref={hiddenFileInput}
+          type="file"
+          accept="*/dicom,.dcm, image/dcm, */dcm, .dicom"
+          onChange={(event) => {
+            imgUploader(event.target.files[0]);
+          }}
+          name="file"
+        />
+        <button
+          className="upload"
+          onClick={() => hiddenFileInput.current.click()}
+        >
+          <i className="fas fa-plus"></i>
+          <span>Upload</span>
+        </button>
+        <span className="tool-tip">Upload</span>
+      </li>
+
+      {/* <Form>
         <FormGroup>
           <div class="input-group mb-3">
             <div class="custom-file">
-              <input
-                type="file"
-                accept="*/dicom,.dcm, image/dcm, */dcm, .dicom"
-                onChange={(event) => setImg(event.target.files[0])}
-                id="inputGroupFile02"
-              />
+              
               <label
                 className="custom-file-label bg-dark text-white file-upload-field"
                 for="inputGroupFile02"
@@ -74,7 +93,6 @@ const UploadForm = () => {
             Upload Image
           </Button>
 
-          {/* Setting window center and window width*/}
           <div class="form-row">
             <div class="col">
               <input
@@ -99,20 +117,18 @@ const UploadForm = () => {
             Update
           </Button>
 
-          
-
           {isLoadedImage && (
             <Button block outline onClick={() => setShowMetaModal(true)}>
               Show MetaData
             </Button>
           )}
         </FormGroup>
-      </Form>
-      <MetadataModel
+      </Form> */}
+      {/* <MetadataModel
         setShowMetaModal={setShowMetaModal}
         metadata={metadata}
         showMetaModal={showMetaModal}
-      />
+      /> */}
     </>
   );
 };

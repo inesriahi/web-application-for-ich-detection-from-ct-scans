@@ -1,8 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
-import SegmentCanvas from "./pages/Segmentation";
-import Canvas from "./pages/Exploration";
+import Segmentation from "./pages/Segmentation";
+import Exploration from "./pages/Exploration";
+import Classification from "./pages/Classification";
 import Layout from "./components/Layout";
 
 import {
@@ -19,11 +20,14 @@ function App() {
     <Router>
       <Layout>
         <Switch>
-        <Route path="/" exact>
-            <Canvas />
+          <Route path="/" exact>
+            <Exploration />
           </Route>
-          <Route path="/segment" exact>
-            <SegmentCanvas />
+          <Route path="/segmentation" exact>
+            <Segmentation />
+          </Route>
+          <Route path="/classification" exact>
+            <Classification />
           </Route>
           <Redirect to="/" />
         </Switch>

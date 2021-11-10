@@ -9,7 +9,7 @@ const CustomMarker = () => {
   return <div className="x-mark"></div>;
 };
 
-const SegmentCanvas = () => {
+const Segmentation = () => {
   const dispatch = useDispatch();
   const imgRef = useRef();
   const loadedImg = useSelector((state) => state.segmentation.img);
@@ -71,4 +71,4 @@ const SegmentCanvas = () => {
   );
 };
 
-export default SegmentCanvas;
+export default Segmentation;

@@ -1,16 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
 import "../../../index.css";
 import NavMenu from "./NavMenu";
-import UploadForm from "./UploadForm";
+
 
 const Sidebar = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
-    <div className="col-3 d-md-block bg-dark sidebar mx-3">
-      <div className="sidebar-sticky">
-          <UploadForm />
-          <NavMenu />
+    <div className={`_sidebar ${isSidebarOpen? "open": ""}`}>
+      <div className="logo_content">
+        <div className="logo">
+          <i className="fas fa-brain"></i>
+          <div className="logo_name">ScanLens</div>
+        </div>
+        <i className="fas fa-bars menu" onClick={() => setIsSidebarOpen(value => !value)}></i>
       </div>
+      <NavMenu />
     </div>
+
+    // <div className="col-3 d-md-block bg-dark sidebar mx-3">
+    //   <div className="sidebar-sticky">
+    //       <UploadForm />
+    //       <NavMenu />
+    //   </div>
+    // </div>
   );
 };
 

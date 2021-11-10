@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const imgSlice = createSlice({
   name: "img",
-  initialState: { img: "", isLoadedImg: false },
+  initialState: { img: "", isLoadedImg: false, metadata: {} },
   reducers: {
     setImg(state, action) {
       // console.log("setImg ran correctly")
@@ -12,6 +12,9 @@ const imgSlice = createSlice({
     setIsLoadedImg(state, action) {
       state.isLoadedImg = action.payload;
     },
+    setMetadata(state, action) {
+      state.metadata = action.payload;
+    }
   },
 });
 

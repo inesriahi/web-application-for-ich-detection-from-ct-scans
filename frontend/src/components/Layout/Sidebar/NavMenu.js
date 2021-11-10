@@ -1,18 +1,17 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import NavElement from "./NavElement";
+import UploadForm from "./UploadForm";
+
+import "../../../index.css";
 
 const NavMenu = () => {
   return (
-    <ul className="nav nav-pills flex-column mb-auto">
-      <li className="nav-item">
-        <NavLink className="nav-link" to="/" exact>
-          Exploration
-        </NavLink>
-        <NavLink className="nav-link" to="/segment" exact>
-          Segmentation & Texture Analysis
-        </NavLink>
-      </li>
-    </ul>
+    <ul class="nav-list">
+        <UploadForm />
+        <NavElement iconClass="fas fa-camera" name = "Exploration" to="/" />
+        <NavElement iconClass="fas fa-scissors" name = "Segmentation" to="/segmentation" />
+        <NavElement iconClass="fas fa-project-diagram" name = "Classification" to="/classification"/>
+      </ul>
   );
 };
 

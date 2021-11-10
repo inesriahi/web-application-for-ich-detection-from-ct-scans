@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
-const Canvas = () => {
+const Exploration = () => {
   const imgRef = useRef();
   const loadedImg = useSelector((state) => state.img.img);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
@@ -14,4 +14,4 @@ const Canvas = () => {
   </>;
 };
 
-export default Canvas;
+export default Exploration;
