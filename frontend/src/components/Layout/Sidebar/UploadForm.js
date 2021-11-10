@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form } from "reactstrap";
 import axios from "axios";
-import { imgActions, segmentedActions } from "../../store";
+import { imgActions, segmentedActions } from "../../../store";
 import MetadataModel from "./MetadataModal/MetadataModal";
 import { FormGroup } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
