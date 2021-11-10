@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Button, Form } from "reactstrap";
 import axios from "axios";
 import { imgActions, segmentedActions } from "../../../store";
-import MetadataModel from "./MetadataModal/MetadataModal";
+// import MetadataModel from "../Topbar/MetadataModal/MetadataModal";
 import { FormGroup } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -33,22 +33,6 @@ const UploadForm = () => {
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoadedImg(true));
         dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const window_handler = () => {
-    axios
-      .post("http://localhost:8000/api/windowing/", {
-        windowCenter: windowCenter,
-        windowWidth: windowWidth,
-      })
-      .then((res) => {
-        // console.log(res.data.image);
-        dispatch(imgActions.setImg(res.data.image));
-        dispatch(segmentedActions.setImg(res.data.image));
-        dispatch(imgActions.setIsLoadedImg(true));
-        dispatch(segmentedActions.setIsLoadedImg(true));
       })
       .catch((err) => console.error(err));
   };

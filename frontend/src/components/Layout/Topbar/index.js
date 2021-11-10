@@ -1,10 +1,27 @@
 import React from "react";
+import CustomizedWindow from "./CustomizedWindow";
+import MetaData from "./MetaData";
+import PredefinedWindow from "./PredefinedWindow";
+import { useSelector } from "react-redux";
 
 const Topbar = () => {
+  const isLoadedImg = useSelector((state) => state.img.isLoadedImg);
+
   return (
-    <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a href = "#" className="navbar-brand col-sm-3 col-md-2 mr-0">FYP</a>
-    </nav>
+    <div class="topbar">
+      {isLoadedImg && (
+        <>
+          <div class="topbar_left">
+            <CustomizedWindow />
+            <PredefinedWindow />
+          </div>
+
+          <div class="topbar_right">
+            <MetaData />
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
