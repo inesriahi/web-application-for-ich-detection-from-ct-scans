@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
-import SegmentCanvas from "./pages/SegmentationTab";
-import Canvas from "./pages/Canvas";
+import SegmentCanvas from "./pages/Segmentation";
+import Canvas from "./pages/Exploration";
 import Layout from "./components/Layout";
 
 import {
