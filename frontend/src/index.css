@@ -203,6 +203,9 @@ body {
   min-height: 100vh;
 }
 
+ul {
+  margin: 0 !important;
+}
 .tool-tip {
   position: absolute;
   display: flex;
@@ -219,6 +222,7 @@ body {
   transition: all 0.3s ease;
   text-align: center;
   border-radius: 12px;
+  white-space: nowrap;
 }
 
 ._sidebar {
@@ -559,6 +563,8 @@ body {
 
 /****************** TOOLBAR ***********************/
 .toolbar {
+  top: calc(var(--topbar-height));
+  left: 0;
   margin: 5px 0 0 5px;
   display: flex;
   position: absolute;
@@ -580,9 +586,11 @@ body {
   background-color: var(--black-lighter);
   cursor: pointer;
   transition: all 0.3s ease;
+
 }
 
-.toolbar li:hover {
+.toolbar li:hover,
+.toolbar li.active {
   background-color: var(--white);
   color: var(--black);
 }
@@ -591,7 +599,8 @@ body {
   color: var(--white);
 }
 
-.toolbar li:hover i {
+.toolbar li:hover i,
+.toolbar li.active i{
   color: var(--black);
 }
 
@@ -710,6 +719,16 @@ body {
   border: 2px dashed var(--white);
   overflow: hidden;
   position: relative;
+}
+
+.main-content .content .image-container.loaded {
+  border: none;
+}
+
+.main-content .content .image-container img,
+.main-content .content .image-marker {
+  width: 100%;
+  height:100%;
 }
 
 /***************** MODAL ***********************/

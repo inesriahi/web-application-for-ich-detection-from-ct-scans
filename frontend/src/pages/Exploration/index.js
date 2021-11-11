@@ -1,13 +1,14 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 const Exploration = () => {
-  const imgRef = useRef();
+
   const loadedImg = useSelector((state) => state.img.img);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   return <>
+  {!isLoadedImage && <div class="image-container">Upload File</div>}
   {isLoadedImage && (
-      <div className="brain-img">
+      <div className={`image-container ${isLoadedImage ? 'loaded' : ''}`}>
           <img src={`data:image/png;base64,${loadedImg}`}/>
       </div>
   )}

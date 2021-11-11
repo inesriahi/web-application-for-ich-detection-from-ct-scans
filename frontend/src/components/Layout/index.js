@@ -11,7 +11,7 @@ const Layout = (props) => {
       <section className="main">
         <Topbar />
         <RightSidebar />
-        <Toolbar />
+        {/* <Toolbar /> */}
         <main className="main-content">
           <div class="content">{props.children}</div>
         </main>
