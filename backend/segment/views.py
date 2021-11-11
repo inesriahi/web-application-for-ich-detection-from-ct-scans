@@ -103,6 +103,7 @@ def windowing_view(request):
     return HttpResponse(json.dumps(response), status=200)
 
 
+
 @api_view(['POST'])
 def classification_view(request):
     multilabel_header = ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural']
