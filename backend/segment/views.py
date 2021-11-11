@@ -104,7 +104,9 @@ def windowing_view(request):
 
 
 @api_view(['POST'])
-def classification(request):
+def classification_view(request):
+    multilabel_header = ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural']
+
     # read image
     dcm = img_dcom
     # correct dcm
@@ -121,7 +123,7 @@ def classification(request):
     binaryPred = Binary_model.predict(img)
     #load saved Multilabel model
     Multilabel = keras.models.load_model('multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
-
+  
     if binaryPred > 0.5:
         multiPred = Multilabel.predict(img)
         
@@ -130,4 +132,5 @@ def classification(request):
     
     print("binaryPred:",binaryPred)
     print("multiPred:",multiPred)
-    return binaryPred, multiPred
+    print("multilabel_header:",multilabel_header)
+    return Response({"binaryPred": binaryPred, "multiPred": multiPred, "multilabel_header:": multilabel_header})  
