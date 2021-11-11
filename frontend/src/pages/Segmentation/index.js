@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button } from "reactstrap";
 import ImageMarker from "./ImageMarker";
 import { segmentedActions } from "../../store";
 import axios from "axios";
 import Toolbar from "../../components/Layout/Toolbar";
+import { SEGMENT_URL } from "../../global/endpoints";
+import RightSidebar from "../../components/Layout/RightSidebar";
+import StatisticsTable from "./StatisticsTable";
 
 const CustomMarker = () => {
   return <div className="x-mark"></div>;
@@ -18,17 +20,23 @@ const Segmentation = () => {
   const [marksArray, setMarksArray] = useState([]);
   const [markersActualCoor, setMarkersActualCoor] = useState([]);
   const [isSelectingActive, setIsSelectingActive] = useState(false);
+  const [isSegmented, setIsSegmented] = useState(false);
+  const [statistics, setStatistics] = useState([]);
 
   const sendMerkersArrayHandler = () => {
     axios
-      .post("http://localhost:8000/api/segment/", {
+      .post(SEGMENT_URL, {
         coors: markersActualCoor,
         // img: {img: loadedImg, size: [imgRef.current.naturalWidth, imgRef.current.naturalHeight]},
       })
       .then((res) => {
         dispatch(segmentedActions.setImg(res.data.segmentation));
         dispatch(segmentedActions.setIsLoadedImg(true));
-        console.log(res.data.segmentation);
+        setStatistics(JSON.parse(res.data.statistics));
+        setIsSegmented(true);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -59,12 +67,25 @@ const Segmentation = () => {
       iconClass: "fas fa-check-circle",
       onClickHandler: sendMerkersArrayHandler,
       disabled: marksArray.length === 0,
-    }
+    },
   ];
 
   return (
     <>
       {isLoadedImage && <Toolbar tools={tools} />}
+      {isSegmented && (
+        <RightSidebar title="Texture Statistics">
+          <div className="body">
+            <div className="histogram"></div>
+            <div className="table">
+              <div>
+                <StatisticsTable data={statistics} />
+              </div>
+            </div>
+          </div>
+        </RightSidebar>
+      )}
+
       {!isLoadedImage && <div class="image-container">Upload File</div>}
       {isLoadedImage && (
         <div className={`image-container ${isLoadedImage ? "loaded" : ""}`}>
@@ -99,12 +120,6 @@ const Segmentation = () => {
           />
         </div>
       )}
-{/* 
-      {marksArray.length > 0 && (
-        <Button block outline onClick={sendMerkersArrayHandler}>
-          Segment
-        </Button>
-      )} */}
     </>
   );
 };

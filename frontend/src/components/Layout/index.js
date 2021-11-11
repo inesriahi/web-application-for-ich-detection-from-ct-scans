@@ -1,8 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
-import Toolbar from "./Toolbar";
-import RightSidebar from "./RightSidebar";
 
 const Layout = (props) => {
   return (
@@ -10,8 +10,6 @@ const Layout = (props) => {
       <Sidebar />
       <section className="main">
         <Topbar />
-        <RightSidebar />
-        {/* <Toolbar /> */}
         <main className="main-content">
           <div class="content">{props.children}</div>
         </main>

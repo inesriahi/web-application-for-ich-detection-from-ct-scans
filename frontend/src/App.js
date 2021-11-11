@@ -5,6 +5,7 @@ import Segmentation from "./pages/Segmentation";
 import Exploration from "./pages/Exploration";
 import Classification from "./pages/Classification";
 import Layout from "./components/Layout";
+import { SEGMENTATION, CLASSIFICATION, EXPLORATION } from "./global/pageNames";
 
 import {
   BrowserRouter as Router,
@@ -20,13 +21,13 @@ function App() {
     <Router>
       <Layout>
         <Switch>
-          <Route path="/" exact>
+          <Route path={EXPLORATION} exact>
             <Exploration />
           </Route>
-          <Route path="/segmentation" exact>
+          <Route path={SEGMENTATION} exact>
             <Segmentation />
           </Route>
-          <Route path="/classification" exact>
+          <Route path={CLASSIFICATION} exact>
             <Classification />
           </Route>
           <Redirect to="/" />

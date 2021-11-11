@@ -73,7 +73,7 @@ def segment_img_view(request):
         segmented_image = region_growing_segmentation(windowd_image,coors)
         # Features Extraction
         features = featureExtractor(windowd_image, segmented_image)
-        print(features)
+        # print(features)
 
         segmented_image = map_to_whole_image_range(segmented_image)
         windowd_image = map_to_whole_image_range(windowd_image)
@@ -85,7 +85,7 @@ def segment_img_view(request):
         # encoded_segmentation =encode_img_to_string(segmented_image)
         
         # Send the segmented image
-        return Response({"segmentation": merged}) #encoded_segmentation
+        return Response({"segmentation": merged, "statistics":json.dumps(features)}) #encoded_segmentation
 
 
 @api_view(['POST'])

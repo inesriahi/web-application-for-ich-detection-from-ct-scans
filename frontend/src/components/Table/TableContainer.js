@@ -54,7 +54,7 @@ const TableContainer = ({ columns, data, renderRowSubComponent }) => {
 
   return (
     <Fragment>
-      <Table bordered hover {...getTableProps()}>
+      <Table bordered hover {...getTableProps()} className="table-scroll">
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

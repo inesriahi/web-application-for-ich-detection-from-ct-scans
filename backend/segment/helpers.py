@@ -146,13 +146,24 @@ def featureExtractor(original, mask):
 
     result = extractor.execute('original.nrrd', 'segmentation.nrrd')
     
-    Energy = float(result['original_firstorder_Energy'])
-    Contrast = float(result['original_glcm_Contrast'])
-    Autocorrelation = float(result['original_glcm_Autocorrelation'])
-    Homogeneity = float(result['original_firstorder_Uniformity'])
-    # store in new dic
-    labels = ['Energy', 'Contrast', 'Autocorrelation', 'Homogeneity']
-    values = [Energy, Contrast, Autocorrelation, Homogeneity]
-    features = dict(zip(labels, values))
+    # Energy = float(result['original_firstorder_Energy'])
+    # Contrast = float(result['original_glcm_Contrast'])
+    # Autocorrelation = float(result['original_glcm_Autocorrelation'])
+    # Homogeneity = float(result['original_firstorder_Uniformity'])
+    # # store in new dic
+    # labels = ['Energy', 'Contrast', 'Autocorrelation', 'Homogeneity']
+    # values = [Energy, Contrast, Autocorrelation, Homogeneity]
+    # features = dict(zip(labels, values))
+
+    # Take all the values from result before diagnostics_Image-original_Mean
+    # and store in new dic
+    import re
+    features = []
+    for key, value in result.items():
+        if key.startswith('original'):
+            _, feature_type, feature_name = key.split('_')
+            # Split a string at uppercase letters
+            well_writen_feature_name = ' '.join(re.findall('[A-Z][^A-Z]*', feature_name))
+            features.append({'feature_name': well_writen_feature_name, 'feature_type':feature_type, 'feature_value':f"{float(value):.5f}"})
 
     return features # or return results 

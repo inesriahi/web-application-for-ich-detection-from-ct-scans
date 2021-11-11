@@ -20,7 +20,7 @@ const imgSlice = createSlice({
 
 const segmentedSlice = createSlice({
   name: "segmentation",
-  initialState: { img: "", isLoadedImg: false },
+  initialState: { img: "", isLoadedImg: false, isSegmented: false },
   reducers: {
     setImg(state, action) {
       // console.log("setImg ran correctly")
@@ -29,6 +29,9 @@ const segmentedSlice = createSlice({
     setIsLoadedImg(state, action) {
       state.isLoadedImg = action.payload;
     },
+    setIsSegmented(state, action) {
+      state.isSegmented = action.payload;
+    }
   },
 });
 

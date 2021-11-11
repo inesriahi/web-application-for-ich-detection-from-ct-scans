@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { imgActions, segmentedActions } from "../../../store";
+import { WINDOWING_URL } from "../../../global/endpoints";
 
 const PredefinedWindow = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const PredefinedWindow = () => {
 
   const windowHandler = (window) => {
     axios
-      .post("http://localhost:8000/api/windowing/", {
+      .post(WINDOWING_URL, {
         windowCenter: window.wc,
         windowWidth: window.ww,
       })

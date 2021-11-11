@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { imgActions, segmentedActions } from "../../../store";
+import { WINDOWING_URL } from "../../../global/endpoints";
 
 import Group from "./Group";
 import axios from "axios";
@@ -15,7 +16,7 @@ const CustomizedWindow = () => {
   const windowHandler = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/windowing/", {
+      .post(WINDOWING_URL, {
         windowCenter: windowCenter,
         windowWidth: windowWidth,
       })
