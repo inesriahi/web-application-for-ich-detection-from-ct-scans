@@ -8,11 +8,13 @@ from rest_framework.response import Response
 import pydicom
 import json
 from .helpers import *
+from .classification_helpers import *
 import matplotlib.pyplot as plt
- 
+
 img_dcom = None
 windowCenter = None
 windowWidth = None
+
 # Create your views here.
 class DocumentViewSet(viewsets.ModelViewSet):
     queryset = Document.objects.all()
@@ -25,7 +27,6 @@ class DocumentViewSet(viewsets.ModelViewSet):
         # Document.objects.create(title = title, file=img)
         img.seek(0)
         img_dcom = pydicom.dcmread(img)
-        
         # print("window center value="+str(windowCenter)+"window width value="+str(windowWidth))
         # print("window min value="+str(min_value)+"window max value="+str(max_value))
         print(np.max(img_dcom.pixel_array), np.min(img_dcom.pixel_array))
@@ -101,3 +102,32 @@ def windowing_view(request):
         
     return HttpResponse(json.dumps(response), status=200)
 
+
+@api_view(['POST'])
+def classification(request):
+    # read image
+    dcm = img_dcom
+    # correct dcm
+    if (dcm.BitsStored == 12) and (dcm.PixelRepresentation == 0) and (int(dcm.RescaleIntercept) > -100):
+        correct_dcm(dcm)
+    img = bsb_window(dcm)
+    img = tf.convert_to_tensor(img, dtype=tf.float64)
+    img = tf.image.resize(img, (224,224))
+    img = np.reshape(img,(1, 224, 224, 3))
+
+    #load saved Binary model
+    Binary_model = keras.models.load_model('binary.h5')
+    #predict
+    binaryPred = Binary_model.predict(img)
+    #load saved Multilabel model
+    Multilabel = keras.models.load_model('multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
+
+    if binaryPred > 0.5:
+        multiPred = Multilabel.predict(img)
+        
+    else:
+        multiPred = None
+    
+    print("binaryPred:",binaryPred)
+    print("multiPred:",multiPred)
+    return binaryPred, multiPred
