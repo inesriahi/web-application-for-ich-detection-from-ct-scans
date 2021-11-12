@@ -53,23 +53,18 @@ def window_image(img, window_center, window_width,IMAGE_SIZES):
 def decode_string_to_image(coded_image):
     import cv2
     import base64
-    # decoded_image = base64.b64decode(coded_image)
     decoded_image = np.fromstring(base64.b64decode(coded_image), np.uint8)
     decoded_image = cv2.imdecode(decoded_image, cv2.IMREAD_GRAYSCALE)
-    # print(decoded_image)
-    # print("______shape:",decoded_image.shape)
+
     return decoded_image
 
 def region_growing_segmentation(image, coors):
     import SimpleITK as sitk
-    # T1_WINDOW_LEVEL = ww_wc
+
 
     # Read image
     img = sitk.GetImageFromArray(image)
-    # img_255 = sitk.Cast(sitk.IntensityWindowing(img, 
-    #                                         windowMinimum=T1_WINDOW_LEVEL[1]-T1_WINDOW_LEVEL[0]/2.0, 
-    #                                         windowMaximum=T1_WINDOW_LEVEL[1]+T1_WINDOW_LEVEL[0]/2.0), 
-    #                                         sitk.sitkUInt8)
+
     # Get coordinates
     points =[]
     for i in coors:
@@ -109,15 +104,10 @@ def merge_image(img, segmentation):
     segmentation[:,:,0] = 0
     segmentation[:,:,2] = 0
 
-    # print('shape:_________',img.shape)
-    # print('shape:_________',segmentation.shape)
-    # merged = cv2.merge(img,segmentation)
 
-    # ret, segmentation_mask = cv2.threshold(segmentation[:,:,0], 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
     merged = img.copy()
     merged[np.where(segmentation == 255)] = segmentation[np.where(segmentation == 255)]
-    # print(img.min(), img.max())
-    # print(segmentation.min(), segmentation.max())
+
     return merged
 
 
@@ -135,9 +125,6 @@ def featureExtractor(original, mask):
 
     array_to_nrrd(original,'original.nrrd')
     array_to_nrrd(mask, 'segmentation.nrrd')
-
-    # settings = {'label': 2}
-    # extractor = radiomics.featureextractor.RadiomicsFeatureExtractor(additionalInfo=True, **settings)
 
     extractor = featureextractor.RadiomicsFeatureExtractor()
     extractor.enableFeatureClassByName('shape2D') #enable shape2D instead of shape
@@ -160,4 +147,4 @@ def featureExtractor(original, mask):
 def segmented_area_histogram(original,segmented_img):
     segmented_area = original.astype(np.float32) * segmented_img.astype(np.float32)
     counts, bins = np.histogram(segmented_area, range(1,256))
-    return [bins, counts]
+    return [bins.tolist(), counts.tolist()]

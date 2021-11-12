@@ -24,17 +24,13 @@ class DocumentViewSet(viewsets.ModelViewSet):
         global img_dcom
         img = request.data['dcmimg']
 
-        # Document.objects.create(title = title, file=img)
         img.seek(0)
         img_dcom = pydicom.dcmread(img)
-        # print("window center value="+str(windowCenter)+"window width value="+str(windowWidth))
-        # print("window min value="+str(min_value)+"window max value="+str(max_value))
         print(np.max(img_dcom.pixel_array), np.min(img_dcom.pixel_array))
         stretched_image = map_to_whole_image_range(img_dcom.pixel_array)
         print(np.max(stretched_image), np.min(stretched_image))
 
         ################# IMAGE PREPARATION FOR SENDING ##################
-        # _, encoded_img = cv2.imencode('.png', np.asarray(stretched_image))
         coded_image = encode_img_to_string(stretched_image)
         metadata = []
         # print(type(img_dcom))
@@ -54,10 +50,9 @@ class DocumentViewSet(viewsets.ModelViewSet):
 def segment_img_view(request):
     if request.method.upper() == 'POST':
         coors = request.data['coors']
-        # encoded_img = request.data['img']['img']
-        # img_size = request.data['img']['size']
+
         #################### CODE FOR SEGMENTATION IS HERE ########################
-        # print(request.data)
+
         print(windowCenter,windowWidth)
         if windowCenter and windowWidth:
             min_value,max_value= get_min_max_of_window_value(windowCenter,windowWidth)
@@ -68,8 +63,7 @@ def segment_img_view(request):
         else:
             windowd_image = img_dcom.pixel_array
 
-        # image = decode_string_to_image(encoded_img)
-        # image = img_dcom.pixel_array
+
 
         segmented_image = region_growing_segmentation(windowd_image,coors)
         # Features Extraction
@@ -82,13 +76,11 @@ def segment_img_view(request):
         merged = merge_image(windowd_image, segmented_image)
         merged = encode_img_to_string(merged)
 
-        # Encode the segmented image
-        # encoded_segmentation =encode_img_to_string(segmented_image)
         
         # get hist
         histogram = segmented_area_histogram(windowd_image,segmented_image)
         # Send the segmented image
-        return Response({"segmentation": merged, "statistics":json.dumps(features),"histogram":histogram}) #encoded_segmentation
+        return Response({"segmentation": merged, "statistics":json.dumps(features),"histogram":json.dumps(histogram)}) #encoded_segmentation
 
 
 @api_view(['POST'])
