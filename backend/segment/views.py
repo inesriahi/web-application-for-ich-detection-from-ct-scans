@@ -85,8 +85,10 @@ def segment_img_view(request):
         # Encode the segmented image
         # encoded_segmentation =encode_img_to_string(segmented_image)
         
+        # get hist
+        histogram = segmented_area_histogram(windowd_image,segmented_image)
         # Send the segmented image
-        return Response({"segmentation": merged, "statistics":json.dumps(features)}) #encoded_segmentation
+        return Response({"segmentation": merged, "statistics":json.dumps(features),"histogram":histogram}) #encoded_segmentation
 
 
 @api_view(['POST'])
