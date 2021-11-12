@@ -67,7 +67,7 @@ body {
   --black-lighter: #1d1d2d;
   --white: #fff;
   --white-darker: #dddddd;
-  --sidebar-width-opened: 20vw;
+  --sidebar-width-opened: 300px;
   --sidebar-width-closed: 85px;
   --right-sidebar-width-opened: 550px;
   --topbar-height: 85px;
@@ -641,20 +641,18 @@ input[type="number"] {
 /*************** RIGHTSIDEBAR TABLE ******************/
 
 .right-sidebar-content .histogram {
-  height: 30vh;
+  height: calc(100% - 350);
 }
 
 .right-sidebar-content .table {
-  height: 400px;
+  height: 350px;
   overflow-y: auto;
-  
-  
+
 }
 
 .right-sidebar-content .table div {
   padding: 0 0 10px 0;
 }
-
 
 .right-sidebar table,
 .right-sidebar .table .row,

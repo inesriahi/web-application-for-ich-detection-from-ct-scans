@@ -145,6 +145,10 @@ def featureExtractor(original, mask):
     return features # or return results 
 
 def segmented_area_histogram(original,segmented_img):
-    segmented_area = original.astype(np.float32) * segmented_img.astype(np.float32)
+
+    
+    segmented_area = original.astype(np.float32) * ((segmented_img.astype(np.float32))/255.)
     counts, bins = np.histogram(segmented_area, range(1,256))
-    return [bins.tolist(), counts.tolist()]
+
+    # return data as what plt.bar accepts
+    return [(bins[:-1]).tolist(), counts.tolist()]

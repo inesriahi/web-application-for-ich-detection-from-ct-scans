@@ -7,6 +7,7 @@ import Toolbar from "../../components/Layout/Toolbar";
 import { SEGMENT_URL } from "../../global/endpoints";
 import RightSidebar from "../../components/Layout/RightSidebar";
 import StatisticsTable from "./StatisticsTable";
+import Histogram from "./Histogram";
 
 const CustomMarker = () => {
   return <div className="x-mark"></div>;
@@ -22,6 +23,7 @@ const Segmentation = () => {
   const [isSelectingActive, setIsSelectingActive] = useState(false);
   const [isSegmented, setIsSegmented] = useState(false);
   const [statistics, setStatistics] = useState([]);
+  const [histogram, setHistogram] = useState([]);
 
   const sendMerkersArrayHandler = () => {
     axios
@@ -34,6 +36,7 @@ const Segmentation = () => {
         dispatch(segmentedActions.setIsLoadedImg(true));
         setStatistics(JSON.parse(res.data.statistics));
         setIsSegmented(true);
+        setHistogram(JSON.parse(res.data.histogram));
       })
       .catch((err) => {
         console.log(err);
@@ -76,7 +79,9 @@ const Segmentation = () => {
       {isSegmented && (
         <RightSidebar title="Texture Statistics">
           <div className="body">
-            <div className="histogram"></div>
+            <div className="histogram">
+              <Histogram data={histogram} />
+            </div>
             <div className="table">
               <div>
                 <StatisticsTable data={statistics} />
