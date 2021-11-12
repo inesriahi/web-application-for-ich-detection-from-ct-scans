@@ -10,11 +10,10 @@ router.register(r'documents', views.DocumentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/segment/', views.segment_img_view),
+    path('api/segment/', views.segment_img_view),
     path('api/windowing/', views.windowing_view),
+    path('api/classify/', views.classification_view),
     path('api/', include(router.urls)),
-    path('api/segment/', views.classification_view),
-    
 ]
 
 if settings.DEBUG:
