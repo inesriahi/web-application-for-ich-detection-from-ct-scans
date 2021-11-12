@@ -158,3 +158,8 @@ def featureExtractor(original, mask):
             features.append({'feature_name': well_writen_feature_name, 'feature_type':feature_type, 'feature_value':f"{float(value):.5f}"})
 
     return features # or return results 
+
+def segmented_area_histogram(original,segmented_img):
+    segmented_area = original.astype(np.float32) * segmented_img.astype(np.float32)
+    counts, bins = np.histogram(segmented_area, range(1,256))
+    return [bins, counts]
