@@ -22,7 +22,6 @@ const UploadForm = () => {
         dispatch(segmentedActions.setImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoadedImg(true));
-        console.log("Metadata ", JSON.parse(res.data.metadata))
         dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
       })
       .catch((err) => console.error(err));

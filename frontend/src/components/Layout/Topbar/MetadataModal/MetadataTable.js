@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { Container } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import TableContainer from "../../../Table/TableContainer";
-import { SelectColumnFilter } from "../../../Table/filters";
+import TableContainer from "../../../Extensions/Table/TableContainer";
+import { SelectColumnFilter } from "../../../Extensions/Table/filters";
 
 const MetadataTable = ({ metadata }) => {
   const columns = useMemo(

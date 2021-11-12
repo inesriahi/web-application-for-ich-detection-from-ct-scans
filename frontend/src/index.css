@@ -696,6 +696,13 @@ input[type="number"] {
   border: none;
   margin: 0 5px;
   font-size: 0.6rem;
+  outline: none !important;
+}
+
+.table .btn:focus {
+  outline: none !important;
+  border-color: var(--white) !important;
+  box-shadow: 0 0 0 0.2rem var(--white) !important;
 }
 
 .table .btn:hover {

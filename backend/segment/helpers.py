@@ -145,15 +145,6 @@ def featureExtractor(original, mask):
     extractor.enableFeatureClassByName('shape2D') #enable shape2D instead of shape
 
     result = extractor.execute('original.nrrd', 'segmentation.nrrd')
-    
-    # Energy = float(result['original_firstorder_Energy'])
-    # Contrast = float(result['original_glcm_Contrast'])
-    # Autocorrelation = float(result['original_glcm_Autocorrelation'])
-    # Homogeneity = float(result['original_firstorder_Uniformity'])
-    # # store in new dic
-    # labels = ['Energy', 'Contrast', 'Autocorrelation', 'Homogeneity']
-    # values = [Energy, Contrast, Autocorrelation, Homogeneity]
-    # features = dict(zip(labels, values))
 
     # Take all the values from result before diagnostics_Image-original_Mean
     # and store in new dic

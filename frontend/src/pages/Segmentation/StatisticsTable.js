@@ -1,9 +1,8 @@
 
 import React, {useMemo} from 'react'
-import { Container } from "reactstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
-import TableContainer from '../../components/Table/TableContainer'
-import { SelectColumnFilter } from '../../components/Table/filters'
+import TableContainer from '../../components/Extensions/Table/TableContainer'
+import { SelectColumnFilter } from '../../components/Extensions/Table/filters'
 
 const StatisticsTable = ({data}) => {
     const columns = useMemo(
