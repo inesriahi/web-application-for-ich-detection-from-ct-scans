@@ -116,7 +116,7 @@ def classification_view(request):
     img = bsb_window(dcm)
     img = tf.convert_to_tensor(img, dtype=tf.float64)
     img = tf.image.resize(img, (224,224))
-    img = np.reshape(img,(1, 224, 224, 3))
+    img = tf.expand_dims(img, axis=0)
 
     #load saved Binary model
     Binary_model = keras.models.load_model('segment/models/binary.h5')
