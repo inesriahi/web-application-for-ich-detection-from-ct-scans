@@ -116,14 +116,14 @@ def classification_view(request):
     img = bsb_window(dcm)
     img = tf.convert_to_tensor(img, dtype=tf.float64)
     img = tf.image.resize(img, (224,224))
-    img = np.reshape(img,(1, 224, 224, 3))
+    img = tf.expand_dims(img, axis=0)
 
     #load saved Binary model
-    Binary_model = keras.models.load_model('binary.h5')
+    Binary_model = tf.keras.models.load_model('segment/models/binary.h5')
     #predict
     binaryPred = Binary_model.predict(img)
     #load saved Multilabel model
-    Multilabel = keras.models.load_model('multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
+    Multilabel = tf.keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
   
     if binaryPred > 0.5:
         multiPred = Multilabel.predict(img)
