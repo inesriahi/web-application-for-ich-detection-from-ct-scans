@@ -131,8 +131,6 @@ def array_to_nrrd(array_image,filename):
 
 
 def featureExtractor(original, mask):
-    import six
-    import radiomics
     from radiomics import featureextractor  # This module is used for interaction with pyradiomics
 
     array_to_nrrd(original,'original.nrrd')
