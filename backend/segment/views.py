@@ -113,10 +113,14 @@ def classification_view(request):
     img = tf.expand_dims(img, axis=0)
 
     #load saved Binary model
+    print("Binary Classification Started...")
     Binary_model = keras.models.load_model('segment/models/binary.h5')
+    
     #predict
     binaryPred = Binary_model.predict(img)
+    print("Binary Model Finished...")
     #load saved Multilabel model
+    print("Multilabel Classification Started...")
     Multilabel = keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
   
     if binaryPred > 0.5:
@@ -124,6 +128,7 @@ def classification_view(request):
         
     else:
         multiPred = None
+    print("Multilabel Model Finished...")
     
     print("binaryPred:",binaryPred)
     print("multiPred:",multiPred)

@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
-import { imgActions, segmentedActions } from "../../../store";
-import { useDispatch} from "react-redux";
-import {UPLOAD_URL} from '../../../global/endpoints'
+import { imgActions, segmentedActions, classificationActions } from "../../../store";
+import { useDispatch } from "react-redux";
+import { UPLOAD_URL, CLASSIFY_URL } from "../../../global/endpoints";
 
 const UploadForm = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,14 @@ const UploadForm = () => {
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoadedImg(true));
         dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
+
+        // Send a request to the server to classify the image once it is uploaded
+        axios.post(CLASSIFY_URL).then((res) => {
+          const data = res.data;
+          dispatch(classificationActions.setBinaryPred(data.binaryPred[0]));
+          dispatch(classificationActions.setMultiPred(data.multiPred ? data.multiPred[0]: null));
+          console.log("From UploadForm ", data.multiPred)
+        });
       })
       .catch((err) => console.error(err));
   };
