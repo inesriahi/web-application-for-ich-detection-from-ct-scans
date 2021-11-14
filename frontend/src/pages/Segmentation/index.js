@@ -35,8 +35,8 @@ const Segmentation = () => {
         dispatch(segmentedActions.setImg(res.data.segmentation));
         dispatch(segmentedActions.setIsLoadedImg(true));
         setStatistics(JSON.parse(res.data.statistics));
-        setIsSegmented(true);
         setHistogram(JSON.parse(res.data.histogram));
+        setIsSegmented(true);
       })
       .catch((err) => {
         console.log(err);
@@ -77,7 +77,12 @@ const Segmentation = () => {
     <>
       {isLoadedImage && <Toolbar tools={tools} />}
       {isSegmented && (
-        <RightSidebar title="Texture Statistics">
+        <RightSidebar
+          title="Texture Statistics"
+          isDefaultOpen={false}
+          openIconClass="far fa-chart-bar"
+          openTooltip="Texture Anaylsis"
+        >
           <div className="body">
             <div className="histogram">
               <Histogram data={histogram} />

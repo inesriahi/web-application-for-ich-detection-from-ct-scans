@@ -120,15 +120,17 @@ def classification_view(request):
     binaryPred = Binary_model.predict(img)
     print("Binary Model Finished...")
     #load saved Multilabel model
-    print("Multilabel Classification Started...")
+    
     Multilabel = keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
   
     if binaryPred > 0.5:
+        print("Multilabel Classification Started...")
         multiPred = Multilabel.predict(img)
+        print("Multilabel Model Finished...")
         
     else:
         multiPred = None
-    print("Multilabel Model Finished...")
+    
     
     print("binaryPred:",binaryPred)
     print("multiPred:",multiPred)

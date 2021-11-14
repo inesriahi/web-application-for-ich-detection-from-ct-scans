@@ -17,13 +17,6 @@ const Sidebar = () => {
       </div>
       <NavMenu />
     </div>
-
-    // <div className="col-3 d-md-block bg-dark sidebar mx-3">
-    //   <div className="sidebar-sticky">
-    //       <UploadForm />
-    //       <NavMenu />
-    //   </div>
-    // </div>
   );
 };
 

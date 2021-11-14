@@ -1,13 +1,21 @@
 import React from "react";
 import axios from "axios";
-import { imgActions, segmentedActions, classificationActions } from "../../../store";
-import { useDispatch } from "react-redux";
-import { UPLOAD_URL, CLASSIFY_URL } from "../../../global/endpoints";
+import {
+  imgActions,
+  segmentedActions,
+  classificationActions,
+} from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { UPLOAD_URL } from "../../../global/endpoints";
 
 const UploadForm = () => {
   const dispatch = useDispatch();
 
   const hiddenFileInput = React.useRef();
+
+  const isClassificationLoading = useSelector(
+    (state) => state.classification.isLoading
+  );
 
   const imgUploader = (image) => {
     const uploadData = new FormData();
@@ -24,13 +32,7 @@ const UploadForm = () => {
         dispatch(segmentedActions.setIsLoadedImg(true));
         dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
 
-        // Send a request to the server to classify the image once it is uploaded
-        axios.post(CLASSIFY_URL).then((res) => {
-          const data = res.data;
-          dispatch(classificationActions.setBinaryPred(data.binaryPred[0]));
-          dispatch(classificationActions.setMultiPred(data.multiPred ? data.multiPred[0]: null));
-          console.log("From UploadForm ", data.multiPred)
-        });
+        dispatch(classificationActions.setIsClassified(false));
       })
       .catch((err) => console.error(err));
   };
@@ -47,13 +49,21 @@ const UploadForm = () => {
           }}
           name="file"
         />
-        <button
-          className="upload"
-          onClick={() => hiddenFileInput.current.click()}
-        >
-          <i className="fas fa-plus"></i>
-          <span>Upload</span>
-        </button>
+        {isClassificationLoading ? (
+          <button
+            className={`upload disabled`}
+          >
+            <span style={{fontSize: "15px", fontWeight: "300"}}>Wait until classification<br/>is completed</span>
+          </button>
+        ) : (
+          <button
+            className={`upload`}
+            onClick={() => hiddenFileInput.current.click()}
+          >
+            <i className="fas fa-plus"></i>
+            <span>Upload</span>
+          </button>
+        )}
         <span className="tool-tip">Upload</span>
       </li>
     </>

@@ -1,66 +1,78 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import RightPopup from "../../components/Layout/RightPopup.js";
+import { useSelector , useDispatch } from "react-redux";
+import axios from "axios";
+import { BoxLoading } from "react-loadingg";
+
+import { HEADER } from "../../global/constants";
+import { CLASSIFY_URL } from "../../global/endpoints.js";
+
 import ResultItem from "./ResultItem.js";
-import {HEADER} from "../../global/constants";
+import RightSidebar from "../../components/Layout/RightSidebar/index.js";
+import LoadingContainer from "../../components/Extensions/LoadingContainer.js";
+import { classificationActions } from "../../store/index.js";
 
 const Classification = () => {
+  const dispatch = useDispatch();
+
   const loadedImg = useSelector((state) => state.img.img);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   const binaryPred = useSelector((state) => state.classification.binaryPred);
   const multiPred = useSelector((state) => state.classification.multiPred);
+  const isClassificationLoading = useSelector(
+    (state) => state.classification.isLoading
+  );
+  const isClassificationClassified = useSelector(
+    (state) => state.classification.isClassified
+  );
 
-  const l=[];
+  const classifyHandler = () => {
+    // Send a request to the server to classify the image
+    dispatch(classificationActions.setIsLoading(true));
+    
+    axios.post(CLASSIFY_URL).then((res) => {
+      const data = res.data;
+      dispatch(classificationActions.setBinaryPred(data.binaryPred[0]));
+      dispatch(classificationActions.setMultiPred(data.multiPred ? data.multiPred[0]: null));
+      dispatch(classificationActions.setIsLoading(false));
+      dispatch(classificationActions.setIsClassified(true));
+      console.log("From UploadForm ", data.multiPred)
+    });
+  }
+
+  const l = [];
   if (multiPred) {
-      for (let i = 0; i < multiPred.length; i++) {
-          l.push(<ResultItem key={i} name={HEADER[i]} percent={multiPred[i]}/>);
-      }
-      console.log("This is l: ", l);
+    for (let i = 0; i < multiPred.length; i++) {
+      l.push(<ResultItem key={i} name={HEADER[i]} percent={multiPred[i]} />);
+    }
   }
 
   return (
     <>
-      <RightPopup title="Classification Results">
-        <ul class="classification-list">
-          <ResultItem name="Abnormality" percent={binaryPred} />
-          {l.length > 0 ? l : null}
-          {/* <li>
-            <div class="classification-item-name-percent">
-              <span class="classification-item-name">Class 2</span>
-              <span class="percentage">30%</span>
-            </div>
-            <div class="classification-item-bar"></div>
-          </li>
-          <li>
-            <div class="classification-item-name-percent">
-              <span class="classification-item-name">Class 3</span>
-              <span class="percentage">70%</span>
-            </div>
-
-            <div class="classification-item-bar">
-              <div class="classification-item-bar-fill"></div>
-            </div>
-          </li>
-          <li>
-            <div class="classification-item-name-percent">
-              <span class="classification-item-name">Class 3</span>
-              <span class="percentage">70%</span>
-            </div>
-            <div class="classification-item-bar">
-              <div class="classification-item-bar-fill"></div>
-            </div>
-          </li>
-          <li>
-            <div class="classification-item-name-percent">
-              <span class="classification-item-name">Class 3</span>
-              <span class="percentage">70%</span>
-            </div>
-            <div class="classification-item-bar">
-              <div class="classification-item-bar-fill"></div>
-            </div>
-          </li> */}
-        </ul>
-      </RightPopup>
+      {isLoadedImage && (
+        <RightSidebar
+          title="Classification Results"
+          isDefaultOpen={true}
+          openTooltip="Classification Results"
+          openIconClass="fas fa-percentage"
+          width="400px"
+        >
+          {/* Display classification button when it not loading and not classified */}
+          {isClassificationLoading && !isClassificationClassified && (
+            <LoadingContainer text="Classifying...">
+              <BoxLoading color="#fff" style={{ position: "relative" }} />
+            </LoadingContainer>
+          )}
+          {!isClassificationLoading && !isClassificationClassified && (
+            <button className="_btn" onClick={classifyHandler}>Start Classification</button>
+          )}
+          {!isClassificationLoading && isClassificationClassified && (
+            <ul class="classification-list">
+              <ResultItem name="Abnormality" percent={binaryPred} />
+              {l.length > 0 ? l : null}
+            </ul>
+          )}
+        </RightSidebar>
+      )}
       {isLoadedImage && (
         <div className={`image-container ${isLoadedImage ? "loaded" : ""}`}>
           <img src={`data:image/png;base64,${loadedImg}`} />

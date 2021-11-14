@@ -25,6 +25,8 @@ const CustomizedWindow = () => {
         dispatch(segmentedActions.setImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoadedImg(true));
+        setWindowCenter("");
+        setWindowWidth("");
       })
       .catch((err) => console.error(err));
   };

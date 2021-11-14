@@ -15,7 +15,7 @@ const Histogram = (props) => {
         },
       ]}
       layout={{
-        title: "Distribution Histogram",
+        title: "Intensity Distribution Histogram",
         autosize: true,
         margin: {
           t: 30,
@@ -34,12 +34,12 @@ const Histogram = (props) => {
         hoverlabel: { bgcolor: "white" },
         xaxis: {
           automargin: true,
-          title: { text: "Pixel", standoff: 2 },
+          title: { text: "Pixel Value", standoff: 2 },
           domain: [0, 255],
         },
         yaxis: {
           automargin: true,
-          title: { text: "Frequency", standoff: 2 },
+          title: { text: "Density", standoff: 4 },
         },
       }}
       useResizeHandler={true}

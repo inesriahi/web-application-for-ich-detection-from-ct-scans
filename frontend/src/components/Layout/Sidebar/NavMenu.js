@@ -2,7 +2,6 @@ import React from "react";
 import NavElement from "./NavElement";
 import UploadForm from "./UploadForm";
 import {CLASSIFICATION, SEGMENTATION, EXPLORATION} from "../../../global/pageNames"
-
 import "../../../index.css";
 
 const NavMenu = () => {

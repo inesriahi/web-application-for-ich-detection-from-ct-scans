@@ -8,7 +8,7 @@ const ResultItem = (props) => {
         <span class="percentage">{(+props.percent * 100).toFixed(2)}%</span>
       </div>
       <div class="classification-item-bar">
-        <div class="classification-item-bar-fill" style={{width: Math.round(+props.percent * 100) + "%"}}></div>
+        <div class="classification-item-bar-fill" style={{width: (+props.percent * 100).toFixed(2) + "%"}}></div>
       </div>
     </li>
   );

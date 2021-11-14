@@ -14,7 +14,7 @@ const imgSlice = createSlice({
     },
     setMetadata(state, action) {
       state.metadata = action.payload;
-    }
+    },
   },
 });
 
@@ -30,13 +30,19 @@ const segmentedSlice = createSlice({
     },
     setIsSegmented(state, action) {
       state.isSegmented = action.payload;
-    }
+    },
   },
 });
 
 const classificationSlice = createSlice({
   name: "classification",
-  initialState: { gradcam: "",isLoading: false, binaryPred: null, multiPred: null},
+  initialState: {
+    gradcam: "",
+    isLoading: false,
+    isClassified: false,
+    binaryPred: null,
+    multiPred: null,
+  },
   reducers: {
     setGradcam(state, action) {
       state.gradcam = action.payload;
@@ -45,17 +51,24 @@ const classificationSlice = createSlice({
       state.binaryPred = action.payload;
     },
     setMultiPred(state, action) {
-      console.log("set MultiPred ran successfully with ", action.payload)
+      console.log("set MultiPred ran successfully with ", action.payload);
       state.multiPred = action.payload;
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;
+    },
+    setIsClassified(state, action) {
+      state.isClassified = action.payload;
     }
   },
 });
 
 const store = configureStore({
-  reducer: { img: imgSlice.reducer, segmentation: segmentedSlice.reducer, classification: classificationSlice.reducer },
+  reducer: {
+    img: imgSlice.reducer,
+    segmentation: segmentedSlice.reducer,
+    classification: classificationSlice.reducer,
+  },
 });
 
 export const imgActions = imgSlice.actions;

@@ -1,3 +1,7 @@
+/* Google Font Link */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+
 :root {
   --header-height: 48px;
   --secondary-color-constant: 210, 10%;
@@ -14,6 +18,7 @@
   --sidebar-width-closed: 85px;
   --right-sidebar-width-opened: 700px;
   --topbar-height: 85px;
+
 }
 
 * {
@@ -57,28 +62,19 @@ body {
   pointer-events: none;
 }
 
+.loading-container {
+  position:relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--white);
+}
+
 
 /********************************************************/
-/* Google Font Link */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-
-:root {
-  --black: #303439;
-  --black-lighter: #1d1d2d;
-  --white: #fff;
-  --white-darker: #dddddd;
-  --sidebar-width-opened: 300px;
-  --sidebar-width-closed: 85px;
-  --right-sidebar-width-opened: 550px;
-  --topbar-height: 85px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
 
 body {
   position: relative;
@@ -237,6 +233,7 @@ input[type="number"] {
   opacity: 1;
 }
 
+
 ._sidebar .nav-list input[type="file"] {
   display: none;
 }
@@ -259,6 +256,8 @@ input[type="number"] {
   outline: none;
 }
 
+
+
 ._sidebar .nav-list button.upload span {
   opacity: 0;
   transition: all 0.3s ease;
@@ -278,6 +277,21 @@ input[type="number"] {
   margin-right: 12px;
   font-weight: bold;
   font-size: 25px;
+}
+
+._sidebar .nav-list button.upload.disabled {
+  background-color: var(--black-lighter);
+  color: var(--white);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+._sidebar .nav-list button.upload.disabled span {
+  color: rgb(128, 128, 128);
+}
+
+._sidebar .nav-list button.upload.disabled i {
+  color: rgb(128, 128, 128);
 }
 
 ._sidebar li .tool-tip {
@@ -416,19 +430,20 @@ input[type="number"] {
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
 }
-.topbar ._btn {
+
+._btn {
   border: none;
   outline: none;
-  height: 35px;
   padding: 0 10px;
-  background-color: var(--black-lighter);
-  color: var(--white);
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  background-color: var(--black-lighter);
+  height: 35px;
+  color: var(--white);
 }
 
-.topbar ._btn:hover {
+._btn:hover {
   background-color: var(--white);
   color: var(--black);
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
@@ -565,6 +580,10 @@ input[type="number"] {
   right: 0;
 }
 
+.main .right-sidebar .right-sidebar-content .header {
+  margin-bottom: 20px;
+}
+
 .main .right-sidebar .right-sidebar-content .header .title h1 {
   color: var(--white);
   font-size: 20px;
@@ -583,6 +602,67 @@ input[type="number"] {
   right: 10px;
   top: 20px;
   cursor: pointer;
+}
+
+.main .right-sidebar ._btn {
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 12px;
+}
+
+
+.right-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.right-sidebar ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.right-sidebar ul li:last-child {
+  margin-bottom: 0;
+}
+
+.right-sidebar ul li .classification-item-name-percent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.right-sidebar ul li .classification-item-name-percent .classification-item-name {
+  font-weight: 500;
+}
+
+.right-sidebar ul li .classification-item-bar {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: start;
+    width:100%;
+    height: 10px;
+    background-color: var(--black-lighter);
+    border-radius: 10px;
+}
+
+.right-sidebar ul li .classification-item-bar .classification-item-bar-fill {
+    position: absolute;
+    align-items: center;
+    height: 100%;
+    border-radius: 10px;
+    width: 30%;
+    background-color: var(--white);
+    transition: all 0.3s ease;
 }
 
 /******** MAIN CONTENT ********/
@@ -658,58 +738,6 @@ input[type="number"] {
   margin-bottom: 30px;
   width: 100%;
   text-align: center;
-}
-
-.right-popup ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.right-popup ul li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  margin-bottom: 30px;
-}
-
-.right-popup ul li:last-child {
-  margin-bottom: 0;
-}
-
-.right-popup ul li .classification-item-name-percent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  color: var(--white);
-}
-
-.right-popup ul li .classification-item-name-percent .classification-item-name {
-  font-weight: 500;
-}
-
-.right-popup ul li .classification-item-bar {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: start;
-    width:100%;
-    height: 10px;
-    background-color: var(--black-lighter);
-    border-radius: 10px;
-}
-
-.right-popup ul li .classification-item-bar .classification-item-bar-fill {
-    position: absolute;
-    align-items: center;
-    height: 100%;
-    border-radius: 10px;
-    width: 30%;
-    background-color: var(--white);
-    transition: all 0.3s ease;
 }
 
 
