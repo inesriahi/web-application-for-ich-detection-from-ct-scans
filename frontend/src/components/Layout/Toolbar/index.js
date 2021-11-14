@@ -2,7 +2,6 @@ import React from "react";
 import Tool from "./Tool";
 
 const Toolbar = (props) => {
-  console.log("These ", props.tools);
   return (
     <div class="toolbar">
       <ul class="toolbar-list">

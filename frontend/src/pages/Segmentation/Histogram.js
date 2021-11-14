@@ -2,7 +2,6 @@ import React from "react";
 import Plot from "react-plotly.js";
 
 const Histogram = (props) => {
-  console.log(props.data);
   return (
     <Plot
       data={[

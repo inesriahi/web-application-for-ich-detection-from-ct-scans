@@ -20,17 +20,37 @@ const imgSlice = createSlice({
 
 const segmentedSlice = createSlice({
   name: "segmentation",
-  initialState: { img: "", isLoadedImg: false, isSegmented: false },
+  initialState: {
+    img: "",
+    isLoading: false,
+    isSegmented: false,
+    histogram: [],
+    statistics: [],
+    marksArray: [],
+    markersActualCoor: [],
+  },
   reducers: {
-    setImg(state, action) {
+    setSegmentedImg(state, action) {
       state.img = action.payload;
     },
-    setIsLoadedImg(state, action) {
-      state.isLoadedImg = action.payload;
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
     },
     setIsSegmented(state, action) {
       state.isSegmented = action.payload;
     },
+    setHistogram(state, action) {
+      state.histogram = action.payload;
+    },
+    setStatistics(state, action) {
+      state.statistics = action.payload;
+    },
+    setMarksArray(state, action) {
+      state.marksArray = action.payload;
+    },
+    setMarkersActualCoor(state, action) {
+      state.markersActualCoor = action.payload;
+    }
   },
 });
 
@@ -51,7 +71,6 @@ const classificationSlice = createSlice({
       state.binaryPred = action.payload;
     },
     setMultiPred(state, action) {
-      console.log("set MultiPred ran successfully with ", action.payload);
       state.multiPred = action.payload;
     },
     setIsLoading(state, action) {
@@ -59,7 +78,7 @@ const classificationSlice = createSlice({
     },
     setIsClassified(state, action) {
       state.isClassified = action.payload;
-    }
+    },
   },
 });
 

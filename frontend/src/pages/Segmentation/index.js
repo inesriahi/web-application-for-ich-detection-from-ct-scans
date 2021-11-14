@@ -16,27 +16,35 @@ const CustomMarker = () => {
 const Segmentation = () => {
   const dispatch = useDispatch();
   const imgRef = useRef();
-  const loadedImg = useSelector((state) => state.segmentation.img);
-  const isLoadedImage = useSelector((state) => state.segmentation.isLoadedImg);
-  const [marksArray, setMarksArray] = useState([]);
-  const [markersActualCoor, setMarkersActualCoor] = useState([]);
+  const originalImage = useSelector((state) => state.img.img);
+  const isLoadedOriginalImage = useSelector((state) => state.img.isLoadedImg);
+
+  const SegmentedImg = useSelector((state) => state.segmentation.img);
+  const isLoadingSegmentation = useSelector(
+    (state) => state.segmentation.isLoading
+  );
+  const isSegmented = useSelector((state) => state.segmentation.isSegmented);
+  const marksArray = useSelector((state) => state.segmentation.marksArray);
+  const markersActualCoor = useSelector(state => state.segmentation.markersActualCoor);
+  const statistics = useSelector(state => state.segmentation.statistics);
+  const histogram = useSelector(state => state.segmentation.histogram);
+
   const [isSelectingActive, setIsSelectingActive] = useState(false);
-  const [isSegmented, setIsSegmented] = useState(false);
-  const [statistics, setStatistics] = useState([]);
-  const [histogram, setHistogram] = useState([]);
+
 
   const sendMerkersArrayHandler = () => {
+    dispatch(segmentedActions.setIsLoading(true));
     axios
       .post(SEGMENT_URL, {
         coors: markersActualCoor,
-        // img: {img: loadedImg, size: [imgRef.current.naturalWidth, imgRef.current.naturalHeight]},
       })
       .then((res) => {
-        dispatch(segmentedActions.setImg(res.data.segmentation));
-        dispatch(segmentedActions.setIsLoadedImg(true));
-        setStatistics(JSON.parse(res.data.statistics));
-        setHistogram(JSON.parse(res.data.histogram));
-        setIsSegmented(true);
+        dispatch(segmentedActions.setSegmentedImg(res.data.segmentation));
+        dispatch(segmentedActions.setIsLoading(false));
+        dispatch(segmentedActions.setStatistics(JSON.parse(res.data.statistics)));
+        dispatch(segmentedActions.setHistogram(JSON.parse(res.data.histogram)));
+        dispatch(segmentedActions.setIsSegmented(true));
+        dispatch(segmentedActions.setIsLoading(false));
       })
       .catch((err) => {
         console.log(err);
@@ -55,14 +63,20 @@ const Segmentation = () => {
     {
       name: "Reset",
       iconClass: "fas fa-sync",
-      onClickHandler: () => setMarksArray([]),
+      onClickHandler: () => {
+        dispatch(segmentedActions.setMarksArray([]));
+        dispatch(segmentedActions.setMarkersActualCoor([]));
+        dispatch(segmentedActions.setSegmentedImg(originalImage));
+      },
       disabled: marksArray.length === 0,
     },
     {
       name: "Undo",
       iconClass: "fas fa-undo",
-      onClickHandler: () =>
-        setMarksArray((prevArray) => prevArray.slice(0, prevArray.length - 1)),
+      onClickHandler: () => {
+        dispatch(segmentedActions.setMarksArray(marksArray.slice(0, -1)));
+        dispatch(segmentedActions.setMarkersActualCoor(markersActualCoor.slice(0, -1)));
+        },
       disabled: marksArray.length === 0,
     },
     {
@@ -75,7 +89,9 @@ const Segmentation = () => {
 
   return (
     <>
-      {isLoadedImage && <Toolbar tools={tools} />}
+      {isLoadedOriginalImage && !isLoadingSegmentation && (
+        <Toolbar tools={tools} />
+      )}
       {isSegmented && (
         <RightSidebar
           title="Texture Statistics"
@@ -88,38 +104,46 @@ const Segmentation = () => {
               <Histogram data={histogram} />
             </div>
             <div className="table">
-              <div>
                 <StatisticsTable data={statistics} />
-              </div>
             </div>
           </div>
         </RightSidebar>
       )}
 
-      {!isLoadedImage && <div class="image-container">Upload File</div>}
-      {isLoadedImage && (
-        <div className={`image-container ${isLoadedImage ? "loaded" : ""}`}>
+      {!isLoadedOriginalImage && <div class="image-container">Upload File</div>}
+      {isLoadedOriginalImage && (
+        <div
+          className="image-container loaded"
+        >
           <ImageMarker
             ref={imgRef}
-            src={`data:image/png;base64,${loadedImg}`}
+            src={`data:image/png;base64,${SegmentedImg}`}
             markers={marksArray}
             onAddMarker={
               isSelectingActive
                 ? (marker) => {
                     if (imgRef.current) {
-                      setMarkersActualCoor((prevArray) => [
-                        ...prevArray,
-                        {
-                          x: Math.round(
-                            (marker.left * imgRef.current.naturalWidth) / 100
-                          ),
-                          y: Math.round(
-                            (marker.top * imgRef.current.naturalHeight) / 100
-                          ),
-                        },
-                      ]);
+                      dispatch(segmentedActions.setMarkersActualCoor([...markersActualCoor, {
+                        x: Math.round(
+                          (marker.left * imgRef.current.naturalWidth) / 100
+                        ),
+                        y: Math.round(
+                          (marker.top * imgRef.current.naturalHeight) / 100
+                        ),
+                      }]));
+                      // setMarkersActualCoor((prevArray) => [
+                      //   ...prevArray,
+                      //   {
+                      //     x: Math.round(
+                      //       (marker.left * imgRef.current.naturalWidth) / 100
+                      //     ),
+                      //     y: Math.round(
+                      //       (marker.top * imgRef.current.naturalHeight) / 100
+                      //     ),
+                      //   },
+                      // ]);
                     }
-                    setMarksArray([...marksArray, marker]);
+                    dispatch(segmentedActions.setMarksArray([...marksArray, marker]));
                   }
                 : undefined
             }

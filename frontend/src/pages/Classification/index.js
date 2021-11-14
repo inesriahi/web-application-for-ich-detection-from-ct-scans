@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { BoxLoading } from "react-loadingg";
 
@@ -28,16 +28,24 @@ const Classification = () => {
   const classifyHandler = () => {
     // Send a request to the server to classify the image
     dispatch(classificationActions.setIsLoading(true));
-    
-    axios.post(CLASSIFY_URL).then((res) => {
-      const data = res.data;
-      dispatch(classificationActions.setBinaryPred(data.binaryPred[0]));
-      dispatch(classificationActions.setMultiPred(data.multiPred ? data.multiPred[0]: null));
-      dispatch(classificationActions.setIsLoading(false));
-      dispatch(classificationActions.setIsClassified(true));
-      console.log("From UploadForm ", data.multiPred)
-    });
-  }
+
+    axios
+      .post(CLASSIFY_URL)
+      .then((res) => {
+        const data = res.data;
+        dispatch(classificationActions.setBinaryPred(data.binaryPred[0]));
+        dispatch(
+          classificationActions.setMultiPred(
+            data.multiPred ? data.multiPred[0] : null
+          )
+        );
+        dispatch(classificationActions.setIsLoading(false));
+        dispatch(classificationActions.setIsClassified(true));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const l = [];
   if (multiPred) {
@@ -63,7 +71,9 @@ const Classification = () => {
             </LoadingContainer>
           )}
           {!isClassificationLoading && !isClassificationClassified && (
-            <button className="_btn" onClick={classifyHandler}>Start Classification</button>
+            <button className="_btn" onClick={classifyHandler}>
+              Start Classification
+            </button>
           )}
           {!isClassificationLoading && isClassificationClassified && (
             <ul class="classification-list">
@@ -73,6 +83,7 @@ const Classification = () => {
           )}
         </RightSidebar>
       )}
+      
       {isLoadedImage && (
         <div className={`image-container ${isLoadedImage ? "loaded" : ""}`}>
           <img src={`data:image/png;base64,${loadedImg}`} />

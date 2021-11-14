@@ -25,9 +25,9 @@ const PredefinedWindow = () => {
       })
       .then((res) => {
         dispatch(imgActions.setImg(res.data.image));
-        dispatch(segmentedActions.setImg(res.data.image));
+        dispatch(segmentedActions.setSegmentedImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
-        dispatch(segmentedActions.setIsLoadedImg(true));
+        dispatch(segmentedActions.setIsLoading(false));
       })
       .catch((err) => console.error(err));
   };

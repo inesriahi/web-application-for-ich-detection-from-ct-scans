@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 const RightSidebar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const isDefaultOpen = props.isDefaultOpen;
   useEffect(() => {
-    if (props.isDefaultOpen) {
+    if (isDefaultOpen) {
       setIsOpen(true);
     }
-  }, [props.isDefaultOpen]);
+  }, []);
 
   return (
     <div className={`right-sidebar ${isOpen ? "open" : ""}`}>

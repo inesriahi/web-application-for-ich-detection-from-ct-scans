@@ -25,7 +25,6 @@ const StatisticsTable = ({data}) => {
             }
         ], [])
 
-        console.log(data)
         return (
               <TableContainer columns={columns} data={data} />
           )

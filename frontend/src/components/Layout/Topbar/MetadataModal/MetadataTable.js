@@ -30,7 +30,6 @@ const MetadataTable = ({ metadata }) => {
     []
   );
 
-  console.log(metadata);
   return (
     <Container fluid>
       <div className="table">
