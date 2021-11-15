@@ -76,7 +76,7 @@ const Classification = () => {
             </button>
           )}
           {!isClassificationLoading && isClassificationClassified && (
-            <ul class="classification-list">
+            <ul className="classification-list">
               <ResultItem name="Abnormality" percent={binaryPred} />
               {l.length > 0 ? l : null}
             </ul>
@@ -86,7 +86,7 @@ const Classification = () => {
       
       {isLoadedImage && (
         <div className={`image-container ${isLoadedImage ? "loaded" : ""}`}>
-          <img src={`data:image/png;base64,${loadedImg}`} />
+          <img src={`data:image/png;base64,${loadedImg}`} alt="DICOM file" />
         </div>
       )}
     </>

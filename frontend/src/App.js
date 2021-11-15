@@ -13,6 +13,7 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
+import DragAndDrop from "./components/Extensions/DragAndDrop";
 
 // import UploadForm from "./components/Sidebar/UploadForm";
 

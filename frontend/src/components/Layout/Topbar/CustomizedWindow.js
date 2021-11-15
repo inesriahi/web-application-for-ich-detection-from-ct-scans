@@ -33,12 +33,12 @@ const CustomizedWindow = () => {
 
   return (
     <Group additionalClass="custom-window" title="Customizing window level">
-      <form class="content" onSubmit={windowHandler}>
+      <form className="content" onSubmit={windowHandler}>
         <input
           type="number"
           name="wc"
           placeholder="Window Center"
-          class="input-window"
+          className="input-window"
           value={windowCenter}
           onChange={(e) => setWindowCenter(e.target.value)}
         />
@@ -46,11 +46,11 @@ const CustomizedWindow = () => {
           type="number"
           name="ww"
           placeholder="Window Width"
-          class="input-window"
+          className="input-window"
           value={windowWidth}
           onChange={(e) => setWindowWidth(e.target.value)}
         />
-        <input type="submit" value="Update" class="_btn" />
+        <input type="submit" value="Update" className="_btn" />
       </form>
     </Group>
   );

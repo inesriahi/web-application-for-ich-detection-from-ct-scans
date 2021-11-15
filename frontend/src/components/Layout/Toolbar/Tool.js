@@ -4,7 +4,7 @@ const Tool = (props) => {
   return (
     <>
       {!props.disabled && (
-        <li onClick={props.onClick} className={props.isActive ? "active" : ""}>
+        <li key={props.key} onClick={props.onClick} className={props.isActive ? "active" : ""}>
           <a>
             <i className={props.iconClass}></i>
           </a>

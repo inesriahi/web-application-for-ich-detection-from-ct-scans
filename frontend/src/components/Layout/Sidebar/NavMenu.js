@@ -6,7 +6,7 @@ import "../../../index.css";
 
 const NavMenu = () => {
   return (
-    <ul class="nav-list">
+    <ul className="nav-list">
         <UploadForm />
         <NavElement iconClass="fas fa-camera" name = "Exploration" to={EXPLORATION}/>
         <NavElement iconClass="fas fa-scissors" name = "Segmentation" to={SEGMENTATION}/>

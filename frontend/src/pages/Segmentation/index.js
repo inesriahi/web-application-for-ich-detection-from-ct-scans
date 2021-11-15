@@ -59,7 +59,6 @@ const Segmentation = () => {
       onClickHandler: () => setIsSelectingActive((previous) => !previous),
       isActive: isSelectingActive,
     },
-    // TODO: Add returning the not segmented image besides resetting the array
     {
       name: "Reset",
       iconClass: "fas fa-sync",
@@ -110,7 +109,7 @@ const Segmentation = () => {
         </RightSidebar>
       )}
 
-      {!isLoadedOriginalImage && <div class="image-container">Upload File</div>}
+      {!isLoadedOriginalImage && <div className="image-container">Upload File</div>}
       {isLoadedOriginalImage && (
         <div
           className="image-container loaded"

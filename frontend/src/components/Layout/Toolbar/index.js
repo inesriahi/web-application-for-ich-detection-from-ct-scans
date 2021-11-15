@@ -3,10 +3,11 @@ import Tool from "./Tool";
 
 const Toolbar = (props) => {
   return (
-    <div class="toolbar">
-      <ul class="toolbar-list">
+    <div className="toolbar">
+      <ul className="toolbar-list">
         {props.tools.map((tool) => (
           <Tool
+            key={Math.random()}
             disabled={tool.disabled}
             isActive={tool.isActive}
             name={tool.name}

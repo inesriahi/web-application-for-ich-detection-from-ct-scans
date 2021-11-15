@@ -8,15 +8,15 @@ const Topbar = () => {
   const isLoadedImg = useSelector((state) => state.img.isLoadedImg);
 
   return (
-    <div class="topbar">
+    <div className="topbar">
       {isLoadedImg && (
         <>
-          <div class="topbar_left">
+          <div className="topbar_left">
             <CustomizedWindow />
             <PredefinedWindow />
           </div>
 
-          <div class="topbar_right">
+          <div className="topbar_right">
             <MetaData />
           </div>
         </>

@@ -36,7 +36,7 @@ const PredefinedWindow = () => {
     <Group additionalClass="predefined-window" title="Predefined window levels">
       {Object.keys(predefinedWindows).map((key) => (
         <button
-          class="_btn"
+        className="_btn"
           onClick={windowHandler.bind(this, predefinedWindows[key])}
         >
           {key}

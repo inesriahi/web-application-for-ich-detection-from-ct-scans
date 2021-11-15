@@ -1,89 +1,66 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
+import useDragAndDrop from "../../../hooks/useDragAndDrop";
 
-const DragAndDrop = (props) => {
-  const dropRef = useRef();
-  const [dragging, setDragging] = useState(false);
-  let dragCounter;
+const DragAndDrop = () => {
+  const [file, setFile] = useState();
+  const {
+    dragOver,
+    setDragOver,
+    onDragOver,
+    onDragLeave,
+    fileDropError,
+    setFileDropError,
+  } = useDragAndDrop();
 
-  const handleDragIn = (e) => {
+  const onDrop = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    dragCounter++;
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
-      setDragging(true);
+    setDragOver(false);
+    
+    if ( e.dataTransfer.files &&  e.dataTransfer.files.length > 1) {
+        return setFileDropError("Please Upload Only one Image!");
     }
-  };
-  const handleDragOut = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dragCounter--;
-    if (dragCounter  === 0) {
-      setDragging(false);
+    const selectedFile = e.dataTransfer.files[0];
+    const fileExt = selectedFile.name.split(".")[selectedFile.name.split(".").length - 1]
+
+    console.log(fileExt)
+    if (fileExt !== "dicom" && fileExt !== "dcm") {
+      return setFileDropError("Please Provide a Dicom File!");
     }
-  };
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      props.handleDrop(e.dataTransfer.files);
-    //   e.dataTransfer.clearData();
-      dragCounter = 0;
-    }
+
+    setFile(selectedFile);
   };
 
-  useEffect(() => {
-    dragCounter = 0;
-    let div = dropRef.current;
-    div.addEventListener("dragenter", handleDragIn);
-    div.addEventListener("dragleave", handleDragOut);
-    div.addEventListener("dragover", handleDrag);
-    div.addEventListener("drop", handleDrop);
+  const fileSelect = (e) => {
+    let selectedFile = e.dataTransfer.files[0];
 
-    return () => {
-      div.removeEventListener("dragenter", handleDragIn);
-      div.removeEventListener("dragleave", handleDragOut);
-      div.removeEventListener("dragover", handleDrag);
-      div.removeEventListener("drop", handleDrop);
-    };
-  }, []);
+    if (selectedFile.type.split("/")[0] !== "image") {
+      return setFileDropError("Please Provide an Image!");
+    }
+    setFileDropError("");
+  };
 
   return (
-    <div
-      ref={dropRef}
-      style={{ display: "inline-block", position: "relative" }}
-    >
-      {dragging && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.2)",
-          }}
+    <div className="container">
+      <form>
+        {fileDropError && (
+          <span className="file-drop-error">{fileDropError}</span>
+        )}
+        <label
+          htmlFor="file"
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={(e) => onDrop(e)}
+          style={{ border: `${dragOver ? "3px dashed yellowgreen" : ""}` }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: 0,
-              left: 0,
-              textAlign: "center",
-              color: "grey",
-              fontSize: 36,
-            }}
-          >
-            <div>drop here :)</div>
-          </div>
-        </div>
-      )}
-      {props.children}
+          {file && <h1>{file.name}</h1>}
+          {!file && (
+            <h1 style={{ color: `${dragOver ? " yellowgreen" : ""}` }}>
+              {!dragOver ? "Select Or Drop your File here..." : "Drop here..."}
+            </h1>
+          )}
+        </label>
+        {/* <input type="file" name="file" id="file" onChange={fileSelect} /> */}
+      </form>
     </div>
   );
 };

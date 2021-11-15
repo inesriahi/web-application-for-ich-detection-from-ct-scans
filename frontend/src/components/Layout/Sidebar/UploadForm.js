@@ -33,10 +33,10 @@ const UploadForm = () => {
         dispatch(segmentedActions.setSegmentedImg(res.data.image));
         dispatch(segmentedActions.setIsSegmented(false));
         dispatch(segmentedActions.setIsLoading(false));
-        dispatch(segmentedActions.setMarksArray([]))
-        dispatch(segmentedActions.setMarkersActualCoor([]))
-        dispatch(segmentedActions.setHistogram([]))
-        dispatch(segmentedActions.setStatistics([]))
+        dispatch(segmentedActions.setMarksArray([]));
+        dispatch(segmentedActions.setMarkersActualCoor([]));
+        dispatch(segmentedActions.setHistogram([]));
+        dispatch(segmentedActions.setStatistics([]));
 
         dispatch(classificationActions.setIsClassified(false));
       })
@@ -56,10 +56,12 @@ const UploadForm = () => {
           name="file"
         />
         {isClassificationLoading ? (
-          <button
-            className={`upload disabled`}
-          >
-            <span style={{fontSize: "15px", fontWeight: "300"}}>Wait until classification<br/>is completed</span>
+          <button className={`upload disabled`}>
+            <span style={{ fontSize: "15px", fontWeight: "300" }}>
+              Wait until classification
+              <br />
+              is completed
+            </span>
           </button>
         ) : (
           <button

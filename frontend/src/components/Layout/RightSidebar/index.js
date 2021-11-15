@@ -8,7 +8,7 @@ const RightSidebar = (props) => {
     if (isDefaultOpen) {
       setIsOpen(true);
     }
-  }, []);
+  }, [isDefaultOpen]);
 
   return (
     <div className={`right-sidebar ${isOpen ? "open" : ""}`}>

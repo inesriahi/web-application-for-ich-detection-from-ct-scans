@@ -46,6 +46,7 @@ const segmentedSlice = createSlice({
       state.statistics = action.payload;
     },
     setMarksArray(state, action) {
+      console.log("RAAAAAAAAAAAN")
       state.marksArray = action.payload;
     },
     setMarkersActualCoor(state, action) {

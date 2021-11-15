@@ -648,7 +648,7 @@ input[type="number"] {
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     width:100%;
     height: 10px;
     background-color: var(--black-lighter);
@@ -691,10 +691,17 @@ input[type="number"] {
   border: 2px dashed var(--white);
   overflow: hidden;
   position: relative;
+  flex-direction: column;
 }
 
 .main-content .content .image-container.loaded {
   border: none;
+}
+
+.main-content .content .image-container.loaded.explore > *,
+.main-content .content .image-container.loaded.explore > * > *{
+  width: 100%;
+  height: 100%;
 }
 
 .main-content .content .image-container img,

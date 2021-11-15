@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import MetadataModel from "./MetadataModal/MetadataModal";
-import { imgActions, segmentedActions } from "../../../store";
 import { useSelector } from "react-redux";
 
 const MetaData = () => {
@@ -9,8 +8,8 @@ const MetaData = () => {
 
   return (
     <div>
-      <button class="_btn meta" onClick={() => setShowMetaModal(true)}>
-        <i class="fas fa-table"></i>Metadata
+      <button className="_btn meta" onClick={() => setShowMetaModal(true)}>
+        <i className="fas fa-table"></i>Metadata
       </button>
       <MetadataModel
         setShowMetaModal={setShowMetaModal}
