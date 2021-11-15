@@ -47,7 +47,7 @@ const Segmentation = () => {
         dispatch(segmentedActions.setIsLoading(false));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
@@ -131,17 +131,6 @@ const Segmentation = () => {
                           (marker.top * imgRef.current.naturalHeight) / 100
                         ),
                       }]));
-                      // setMarkersActualCoor((prevArray) => [
-                      //   ...prevArray,
-                      //   {
-                      //     x: Math.round(
-                      //       (marker.left * imgRef.current.naturalWidth) / 100
-                      //     ),
-                      //     y: Math.round(
-                      //       (marker.top * imgRef.current.naturalHeight) / 100
-                      //     ),
-                      //   },
-                      // ]);
                     }
                     dispatch(segmentedActions.setMarksArray([...marksArray, marker]));
                   }

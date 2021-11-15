@@ -27,11 +27,16 @@ const UploadForm = () => {
       .then((res) => {
         // console.log(res.data.image);
         dispatch(imgActions.setImg(res.data.image));
+        dispatch(imgActions.setIsLoadedImg(true));
+        dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
+
         dispatch(segmentedActions.setSegmentedImg(res.data.image));
         dispatch(segmentedActions.setIsSegmented(false));
-        dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoading(false));
-        dispatch(imgActions.setMetadata(JSON.parse(res.data.metadata)));
+        dispatch(segmentedActions.setMarksArray([]))
+        dispatch(segmentedActions.setMarkersActualCoor([]))
+        dispatch(segmentedActions.setHistogram([]))
+        dispatch(segmentedActions.setStatistics([]))
 
         dispatch(classificationActions.setIsClassified(false));
       })
