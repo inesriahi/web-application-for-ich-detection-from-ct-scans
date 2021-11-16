@@ -42,7 +42,7 @@ const Exploration = () => {
         className={`image-container explore ${isLoadedImage ? "loaded" : ""}`}
         style={{ backgroundColor: "#000" }}
       >
-        <DragAndDrop active={!isLoadedImage} uploader={imgUploader}>
+        <DragAndDrop active={!isLoadedImage} uploader = {imgUploader}>
           <Annotation
             src={`data:image/png;base64,${loadedImg}`}
             alt="Two pebbles anthropomorphized holding hands"
