@@ -8,6 +8,8 @@ import { SEGMENT_URL } from "../../global/endpoints";
 import RightSidebar from "../../components/Layout/RightSidebar";
 import StatisticsTable from "./StatisticsTable";
 import Histogram from "./Histogram";
+import DragAndDrop from "../../components/Extensions/DragAndDrop";
+import useImageUploader from "../../hooks/useImageUploader";
 
 const CustomMarker = () => {
   return <div className="x-mark"></div>;
@@ -25,12 +27,13 @@ const Segmentation = () => {
   );
   const isSegmented = useSelector((state) => state.segmentation.isSegmented);
   const marksArray = useSelector((state) => state.segmentation.marksArray);
-  const markersActualCoor = useSelector(state => state.segmentation.markersActualCoor);
-  const statistics = useSelector(state => state.segmentation.statistics);
-  const histogram = useSelector(state => state.segmentation.histogram);
+  const markersActualCoor = useSelector(
+    (state) => state.segmentation.markersActualCoor
+  );
+  const statistics = useSelector((state) => state.segmentation.statistics);
+  const histogram = useSelector((state) => state.segmentation.histogram);
 
   const [isSelectingActive, setIsSelectingActive] = useState(false);
-
 
   const sendMerkersArrayHandler = () => {
     dispatch(segmentedActions.setIsLoading(true));
@@ -41,7 +44,9 @@ const Segmentation = () => {
       .then((res) => {
         dispatch(segmentedActions.setSegmentedImg(res.data.segmentation));
         dispatch(segmentedActions.setIsLoading(false));
-        dispatch(segmentedActions.setStatistics(JSON.parse(res.data.statistics)));
+        dispatch(
+          segmentedActions.setStatistics(JSON.parse(res.data.statistics))
+        );
         dispatch(segmentedActions.setHistogram(JSON.parse(res.data.histogram)));
         dispatch(segmentedActions.setIsSegmented(true));
         dispatch(segmentedActions.setIsLoading(false));
@@ -74,8 +79,10 @@ const Segmentation = () => {
       iconClass: "fas fa-undo",
       onClickHandler: () => {
         dispatch(segmentedActions.setMarksArray(marksArray.slice(0, -1)));
-        dispatch(segmentedActions.setMarkersActualCoor(markersActualCoor.slice(0, -1)));
-        },
+        dispatch(
+          segmentedActions.setMarkersActualCoor(markersActualCoor.slice(0, -1))
+        );
+      },
       disabled: marksArray.length === 0,
     },
     {
@@ -103,45 +110,50 @@ const Segmentation = () => {
               <Histogram data={histogram} />
             </div>
             <div className="table">
-                <StatisticsTable data={statistics} />
+              <StatisticsTable data={statistics} />
             </div>
           </div>
         </RightSidebar>
       )}
 
-      {!isLoadedOriginalImage && <div className="image-container">Upload File</div>}
-      {isLoadedOriginalImage && (
-        <div
-          className="image-container loaded"
-        >
-          <ImageMarker
-            ref={imgRef}
-            src={`data:image/png;base64,${SegmentedImg}`}
-            markers={marksArray}
-            onAddMarker={
-              isSelectingActive
-                ? (marker) => {
-                    if (imgRef.current) {
-                      dispatch(segmentedActions.setMarkersActualCoor([...markersActualCoor, {
-                        x: Math.round(
-                          (marker.left * imgRef.current.naturalWidth) / 100
-                        ),
-                        y: Math.round(
-                          (marker.top * imgRef.current.naturalHeight) / 100
-                        ),
-                      }]));
-                    }
-                    dispatch(segmentedActions.setMarksArray([...marksArray, marker]));
+      <DragAndDrop
+        active={!isLoadedOriginalImage}
+        uploader={useImageUploader()}
+      >
+        <ImageMarker
+          ref={imgRef}
+          src={`data:image/png;base64,${SegmentedImg}`}
+          markers={marksArray}
+          onAddMarker={
+            isSelectingActive
+              ? (marker) => {
+                  if (imgRef.current) {
+                    dispatch(
+                      segmentedActions.setMarkersActualCoor([
+                        ...markersActualCoor,
+                        {
+                          x: Math.round(
+                            (marker.left * imgRef.current.naturalWidth) / 100
+                          ),
+                          y: Math.round(
+                            (marker.top * imgRef.current.naturalHeight) / 100
+                          ),
+                        },
+                      ])
+                    );
                   }
-                : undefined
-            }
-            extraClass="image-marker"
-            markerComponent={CustomMarker}
-            bufferLeft={0}
-            bufferTop={0}
-          />
-        </div>
-      )}
+                  dispatch(
+                    segmentedActions.setMarksArray([...marksArray, marker])
+                  );
+                }
+              : undefined
+          }
+          extraClass="image-marker"
+          markerComponent={CustomMarker}
+          bufferLeft={0}
+          bufferTop={0}
+        />
+      </DragAndDrop>
     </>
   );
 };

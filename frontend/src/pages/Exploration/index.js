@@ -6,7 +6,6 @@ import { PointSelector } from "react-image-annotation-with-zoom/lib/selectors";
 import useImageUploader from "../../hooks/useImageUploader";
 
 const Exploration = () => {
-
   const imgUploader = useImageUploader();
 
   const loadedImg = useSelector((state) => state.img.img);
@@ -37,24 +36,21 @@ const Exploration = () => {
   };
 
   return (
-    <>
-      <div
-        className={`image-container explore ${isLoadedImage ? "loaded" : ""}`}
-        style={{ backgroundColor: "#000" }}
-      >
-        <DragAndDrop active={!isLoadedImage} uploader = {imgUploader}>
-          <Annotation
-            src={`data:image/png;base64,${loadedImg}`}
-            alt="Two pebbles anthropomorphized holding hands"
-            annotations={annotations}
-            type={PointSelector.TYPE}
-            value={annotation}
-            onChange={onChange}
-            onSubmit={onSubmit}
-          />
-        </DragAndDrop>
-      </div>
-    </>
+    <DragAndDrop
+      active={!isLoadedImage}
+      uploader={imgUploader}
+      additionalClasses="explore"
+    >
+      <Annotation
+        src={`data:image/png;base64,${loadedImg}`}
+        alt="Two pebbles anthropomorphized holding hands"
+        annotations={annotations}
+        type={PointSelector.TYPE}
+        value={annotation}
+        onChange={onChange}
+        onSubmit={onSubmit}
+      />
+    </DragAndDrop>
   );
 };
 export default Exploration;

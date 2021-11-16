@@ -696,6 +696,7 @@ input[type="number"] {
 
 .main-content .content .image-container.loaded {
   border: none;
+  background-color: #000;
 }
 
 .main-content .content .image-container.loaded.explore > *,

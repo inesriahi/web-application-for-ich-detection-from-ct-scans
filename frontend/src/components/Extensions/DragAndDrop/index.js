@@ -1,8 +1,11 @@
 import React from "react";
 import useDragAndDrop from "../../../hooks/useDragAndDrop";
 import useImageUploader from "../../../hooks/useImageUploader";
+import { useSelector } from "react-redux";
 
 const DragAndDrop = (props) => {
+  const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
+
   const {
     dragOver,
     setDragOver,
@@ -43,7 +46,11 @@ const DragAndDrop = (props) => {
   // };
 
   return (
-    <>
+    <div
+      className={`image-container ${isLoadedImage ? "loaded" : ""} ${
+        props.additionalClasses ? props.additionalClasses : ""
+      }`}
+    >
       {props.active && (
         <form
           style={{
@@ -84,7 +91,9 @@ const DragAndDrop = (props) => {
                     </h3>
                   </>
                 ) : (
-                  <h1 style={{ color: "white", pointerEvents: "none" }}>Drop here...</h1>
+                  <h1 style={{ color: "white", pointerEvents: "none" }}>
+                    Drop here...
+                  </h1>
                 )}
                 {fileDropError && (
                   <span className="file-drop-error" style={{ color: "red" }}>
@@ -98,7 +107,7 @@ const DragAndDrop = (props) => {
       )}
 
       {!props.active && props.children}
-    </>
+    </div>
   );
 };
 

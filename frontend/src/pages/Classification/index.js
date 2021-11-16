@@ -10,9 +10,12 @@ import ResultItem from "./ResultItem.js";
 import RightSidebar from "../../components/Layout/RightSidebar/index.js";
 import LoadingContainer from "../../components/Extensions/LoadingContainer.js";
 import { classificationActions } from "../../store/index.js";
+import DragAndDrop from "../../components/Extensions/DragAndDrop";
+import useImageUploader from "../../hooks/useImageUploader";
 
 const Classification = () => {
   const dispatch = useDispatch();
+  const imgUploader = useImageUploader();
 
   const loadedImg = useSelector((state) => state.img.img);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
@@ -83,12 +86,13 @@ const Classification = () => {
           )}
         </RightSidebar>
       )}
-      
-      {isLoadedImage && (
-        <div className={`image-container ${isLoadedImage ? "loaded" : ""}`}>
-          <img src={`data:image/png;base64,${loadedImg}`} alt="DICOM file" />
-        </div>
-      )}
+
+        <DragAndDrop active={!isLoadedImage} uploader={imgUploader}>
+          {isLoadedImage && (
+            <img src={`data:image/png;base64,${loadedImg}`} alt="DICOM file" />
+          )}
+        </DragAndDrop>
+
     </>
   );
 };
