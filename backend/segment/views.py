@@ -9,6 +9,8 @@ import pydicom
 import json
 from .helpers import *
 from .classification_helpers import *
+from .segmentation_helpers import *
+
 import matplotlib.pyplot as plt
 
 img_dcom = None
