@@ -1,3 +1,4 @@
+# import needed libraries
 from django.shortcuts import render
 from .models import Document
 from .serializers import DocumentSerializer
@@ -8,11 +9,13 @@ from rest_framework.response import Response
 import pydicom
 import json
 from .helpers import *
+from .gradcam_helpers import *
 from .classification_helpers import *
 from .segmentation_helpers import *
-
 import matplotlib.pyplot as plt
+import cv2
 
+# initialize global variables
 img_dcom = None
 windowCenter = None
 windowWidth = None
@@ -47,7 +50,6 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
         return HttpResponse(json.dumps(response), status=200)
         
-
 @api_view(['POST'])
 def segment_img_view(request):
     if request.method.upper() == 'POST':
@@ -64,7 +66,6 @@ def segment_img_view(request):
             pass
         else:
             windowd_image = img_dcom.pixel_array
-
 
 
         segmented_image = region_growing_segmentation(windowd_image,coors)
@@ -84,7 +85,6 @@ def segment_img_view(request):
         # Send the segmented image
         return Response({"segmentation": merged, "statistics":json.dumps(features),"histogram":json.dumps(histogram)}) #encoded_segmentation
 
-
 @api_view(['POST'])
 def windowing_view(request):
     global windowCenter, windowWidth
@@ -96,45 +96,29 @@ def windowing_view(request):
     coded_image = encode_img_to_string(stretched_image)
     response = {'image': coded_image}
         
-    return HttpResponse(json.dumps(response), status=200)
-
-
+    return HttpResponse(json.dumps(response), status=200) 
 
 @api_view(['POST'])
-def classification_view(request):
-    multilabel_header = ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural']
-
-    # read image
-    dcm = img_dcom
-    # correct dcm
-    if (dcm.BitsStored == 12) and (dcm.PixelRepresentation == 0) and (int(dcm.RescaleIntercept) > -100):
-        correct_dcm(dcm)
-    img = bsb_window(dcm)
-    img = tf.convert_to_tensor(img, dtype=tf.float64)
-    img = tf.image.resize(img, (224,224))
-    img = tf.expand_dims(img, axis=0)
+def classificationWithGradcam_view(request):
 
     #load saved Binary model
     print("Binary Classification Started...")
-    Binary_model = keras.models.load_model('segment/models/binary.h5')
+    BinaryModel = keras.models.load_model('segment/models/binary.h5')
     
     #predict
-    binaryPred = Binary_model.predict(img)
+    gradcamBinary = plot_GradCAM(BinaryModel, img_dcom,['Normal', 'Abnormal'], base_line_model_index = 2 ,stack=True, layerName = 'conv5_block3_out')
+    binaryPred = gradcamBinary['pred']
     print("Binary Model Finished...")
-    #load saved Multilabel model
     
+    #load saved Multilabel model
     Multilabel = keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
   
     if binaryPred > 0.5:
         print("Multilabel Classification Started...")
-        multiPred = Multilabel.predict(img)
+        gradcamMulti  = plot_GradCAM(Multilabel, img_dcom, ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural'],class_idx=4, base_line_model_index = 2 ,stack=True, layerName = 'conv5_block16_concat', colormap=cv2.COLORMAP_HOT)
         print("Multilabel Model Finished...")
         
     else:
-        multiPred = None
-    
-    
-    print("binaryPred:",binaryPred)
-    print("multiPred:",multiPred)
-    print("multilabel_header:",multilabel_header)
-    return Response({"binaryPred": binaryPred, "multiPred": multiPred, "multilabel_header:": multilabel_header})  
+        gradcamMulti = None
+
+    return Response(gradcamBinary, gradcamMulti)
