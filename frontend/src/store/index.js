@@ -6,7 +6,6 @@ const imgSlice = createSlice({
   initialState: { img: "", isLoadedImg: false, metadata: {} },
   reducers: {
     setImg(state, action) {
-      // console.log("setImg ran correctly")
       state.img = action.payload;
     },
     setIsLoadedImg(state, action) {
@@ -45,8 +44,19 @@ const segmentedSlice = createSlice({
     setStatistics(state, action) {
       state.statistics = action.payload;
     },
+    resetMarkers(state) {
+      state.marksArray = [];
+      state.markersActualCoor = [];
+    },
+    undoMarker(state) {
+      state.marksArray.pop();
+      state.markersActualCoor.pop();
+    },
+    resetAnalysis(state) {
+      state.histogram = [];
+      state.statistics = [];
+    },
     setMarksArray(state, action) {
-      console.log("RAAAAAAAAAAAN")
       state.marksArray = action.payload;
     },
     setMarkersActualCoor(state, action) {

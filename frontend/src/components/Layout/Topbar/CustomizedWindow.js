@@ -13,6 +13,7 @@ const CustomizedWindow = () => {
   const [windowCenter, setWindowCenter] = useState("");
   const [windowWidth, setWindowWidth] = useState("");
 
+  // send windowing data to backend and update the image accordingly
   const windowHandler = (e) => {
     e.preventDefault();
     axios
@@ -25,6 +26,10 @@ const CustomizedWindow = () => {
         dispatch(segmentedActions.setSegmentedImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoading(false));
+        dispatch(segmentedActions.resetMarkers());
+        dispatch(segmentedActions.resetAnalysis());
+        dispatch(segmentedActions.setIsSegmented(false));
+
         setWindowCenter("");
         setWindowWidth("");
       })

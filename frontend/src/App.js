@@ -13,12 +13,11 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
-import DragAndDrop from "./components/Extensions/DragAndDrop";
 
-// import UploadForm from "./components/Sidebar/UploadForm";
 
 function App() {
   return (
+    // Router for the routes in the application
     <Router>
       <Layout>
         <Switch>

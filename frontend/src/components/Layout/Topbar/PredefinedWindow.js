@@ -9,14 +9,16 @@ import { WINDOWING_URL } from "../../../global/endpoints";
 const PredefinedWindow = () => {
   const dispatch = useDispatch();
 
+  // set the predefined windowing values
   const predefinedWindows = {
-    Soft: { wc: "40", ww: "80" },
+    Brain: { wc: 40, ww: 80 },
     Subdural: { wc: 60, ww: 200 },
     Stroke: { wc: 40, ww: 40 },
     Bone: { wc: 700, ww: 4000 },
     "Soft Tissues": { wc: 40, ww: 350 },
   };
 
+  // send windowing data to backend and update the image accordingly
   const windowHandler = (window) => {
     axios
       .post(WINDOWING_URL, {
@@ -28,6 +30,9 @@ const PredefinedWindow = () => {
         dispatch(segmentedActions.setSegmentedImg(res.data.image));
         dispatch(imgActions.setIsLoadedImg(true));
         dispatch(segmentedActions.setIsLoading(false));
+        dispatch(segmentedActions.resetMarkers());
+        dispatch(segmentedActions.resetAnalysis());
+        dispatch(segmentedActions.setIsSegmented(false));
       })
       .catch((err) => console.error(err));
   };

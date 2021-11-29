@@ -14,10 +14,12 @@ const Exploration = () => {
   const [annotations, setAnnotations] = useState([]);
   const [annotation, setAnnotation] = useState({});
 
+  // when the annotation is changed
   const onChange = (annotation) => {
     setAnnotation(annotation);
   };
 
+  // when the annotation is submitted
   const onSubmit = (annotation) => {
     const { geometry, data } = annotation;
     setAnnotation({});
@@ -36,6 +38,7 @@ const Exploration = () => {
   };
 
   return (
+    // Drag and drop if the image is not loaded, otherwise show the image
     <DragAndDrop
       active={!isLoadedImage}
       uploader={imgUploader}

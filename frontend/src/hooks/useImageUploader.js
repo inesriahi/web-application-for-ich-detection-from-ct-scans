@@ -27,10 +27,8 @@ const useImageUploader = () => {
             dispatch(segmentedActions.setSegmentedImg(res.data.image));
             dispatch(segmentedActions.setIsSegmented(false));
             dispatch(segmentedActions.setIsLoading(false));
-            dispatch(segmentedActions.setMarksArray([]));
-            dispatch(segmentedActions.setMarkersActualCoor([]));
-            dispatch(segmentedActions.setHistogram([]));
-            dispatch(segmentedActions.setStatistics([]));
+            dispatch(segmentedActions.resetMarkers());
+            dispatch(segmentedActions.resetAnalysis())
     
             dispatch(classificationActions.setIsClassified(false));
           })

@@ -18,6 +18,8 @@ const CustomMarker = () => {
 const Segmentation = () => {
   const dispatch = useDispatch();
   const imgRef = useRef();
+
+  // Load the necessary data from the redux store
   const originalImage = useSelector((state) => state.img.img);
   const isLoadedOriginalImage = useSelector((state) => state.img.isLoadedImg);
 
@@ -33,8 +35,11 @@ const Segmentation = () => {
   const statistics = useSelector((state) => state.segmentation.statistics);
   const histogram = useSelector((state) => state.segmentation.histogram);
 
+  // for managing the selection tool state
   const [isSelectingActive, setIsSelectingActive] = useState(false);
 
+  // for when applying the segmentation, the markers array are sent to the server
+  // and the segmentation is applied
   const sendMerkersArrayHandler = () => {
     dispatch(segmentedActions.setIsLoading(true));
     axios
@@ -56,7 +61,7 @@ const Segmentation = () => {
       });
   };
 
-  // create an object with name and iconClass props
+  // create the tools that will be displayed in the toolbar with their corresponding onClick functions
   const tools = [
     {
       name: "Select Points",
@@ -68,8 +73,8 @@ const Segmentation = () => {
       name: "Reset",
       iconClass: "fas fa-sync",
       onClickHandler: () => {
-        dispatch(segmentedActions.setMarksArray([]));
-        dispatch(segmentedActions.setMarkersActualCoor([]));
+        dispatch(segmentedActions.setIsSegmented(false));
+        dispatch(segmentedActions.resetMarkers([]));
         dispatch(segmentedActions.setSegmentedImg(originalImage));
       },
       disabled: marksArray.length === 0,
@@ -78,10 +83,7 @@ const Segmentation = () => {
       name: "Undo",
       iconClass: "fas fa-undo",
       onClickHandler: () => {
-        dispatch(segmentedActions.setMarksArray(marksArray.slice(0, -1)));
-        dispatch(
-          segmentedActions.setMarkersActualCoor(markersActualCoor.slice(0, -1))
-        );
+        dispatch(segmentedActions.undoMarker());
       },
       disabled: marksArray.length === 0,
     },
@@ -95,10 +97,14 @@ const Segmentation = () => {
 
   return (
     <>
+      {/*Show the toolbar only if the image is loaded*/}
       {isLoadedOriginalImage && !isLoadingSegmentation && (
         <Toolbar tools={tools} />
       )}
+      {/*Show the segmented image and texture analysis info only 
+      if the segmented image is loaded*/}
       {isSegmented && (
+        // right sidebar with statistics and histogram
         <RightSidebar
           title="Texture Statistics"
           isDefaultOpen={false}
@@ -116,10 +122,12 @@ const Segmentation = () => {
         </RightSidebar>
       )}
 
+      {/* // Drag and drop if the image is not loaded, otherwise show the image */}
       <DragAndDrop
         active={!isLoadedOriginalImage}
         uploader={useImageUploader()}
       >
+        {/* the image marker container */}
         <ImageMarker
           ref={imgRef}
           src={`data:image/png;base64,${SegmentedImg}`}

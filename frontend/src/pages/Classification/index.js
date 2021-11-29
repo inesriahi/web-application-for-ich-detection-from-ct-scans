@@ -17,6 +17,7 @@ const Classification = () => {
   const dispatch = useDispatch();
   const imgUploader = useImageUploader();
 
+  // load the necessary data from redux store
   const loadedImg = useSelector((state) => state.img.img);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   const binaryPred = useSelector((state) => state.classification.binaryPred);
@@ -28,6 +29,7 @@ const Classification = () => {
     (state) => state.classification.isClassified
   );
 
+  // handle the classification request
   const classifyHandler = () => {
     // Send a request to the server to classify the image
     dispatch(classificationActions.setIsLoading(true));
