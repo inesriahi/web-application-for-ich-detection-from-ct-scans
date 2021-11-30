@@ -10,12 +10,7 @@ from tensorflow.keras.applications import imagenet_utils
 from .classification_helpers import *
 
 import pydicom
-def preprocess_img(dcm):
-  if (dcm.BitsStored == 12) and (dcm.PixelRepresentation == 0) and (int(dcm.RescaleIntercept) > -100):
-          correct_dcm(dcm)
-  img = bsb_window(dcm)
-  img = tf.convert_to_tensor(img, dtype=tf.float64)
-  return img
+
 
 class GradCAM:
     def __init__(self, model, classIdx,base_line_model_index=None, layerName=None):
@@ -36,14 +31,14 @@ class GradCAM:
     # attempt to find the final convolutional layer in the network
         # by looping over the layers of the network in reverse order
         if self.base_line_model_index is None:
-            for layer in reversed(model.layers):
+            for layer in reversed(self.model.layers):
             # check to see if the layer has a 4D output
-                if len(layer.output_shape) == 4:
+                if 'conv' in layer.name:
                     return layer.name
         else:
             for layer in reversed(self.model.layers[self.base_line_model_index].layers):
             # check to see if the layer has a 4D output
-                if len(layer.output_shape) == 4:
+                if 'conv' in layer.name:
                     print("LAST LAYER IS:",layer.name)
                     return layer.name
             
@@ -118,10 +113,10 @@ class GradCAM:
             # overlaid image
         return (heatmap, output)
 
-def plot_GradCAM(model, image_path,classnames,base_line_model_index, class_idx= None, layerName=None, colormap=cv2.COLORMAP_MAGMA, stack=False, figsize=(10,10), alpha = 0.5):
+def plot_GradCAM(model, image_dcom,classnames,base_line_model_index, class_idx= None, layerName=None, colormap=cv2.COLORMAP_MAGMA, stack=False, figsize=(10,10), alpha = 0.5):
   multilabel_header = ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural']
   figures = dict()
-  image = preprocess_img(image_path)
+  image = preprocess_img_soft(image_dcom)
   orig = image.numpy()
   resized = tf.image.resize(orig, (224,224))
 
@@ -136,14 +131,15 @@ def plot_GradCAM(model, image_path,classnames,base_line_model_index, class_idx= 
 
 
     # initialize our gradient class activation map and build the heatmap
-    cam = GradCAM(model, i, base_line_model_index=base_line_model_index, layerName=layerName)
+    cam = GradCAM(model, i, base_line_model_index=base_line_model_index)
   else:
-    cam = GradCAM(model, class_idx, base_line_model_index=base_line_model_index, layerName=layerName)
+    cam = GradCAM(model, class_idx, base_line_model_index=base_line_model_index)
 
   heatmap = cam.compute_heatmap(image)
   # resize the resulting heatmap to the original input image dimensions
   # and then overlay heatmap on top of the image
   heatmap = cv2.resize(heatmap, (orig.shape[1], orig.shape[0]))
+
 
   (heatmap, output) = cam.overlay_heatmap(heatmap, orig, alpha=alpha, colormap=colormap)
 
@@ -152,25 +148,25 @@ def plot_GradCAM(model, image_path,classnames,base_line_model_index, class_idx= 
   
   # display the original image and resulting heatmap and output image
   # to our screen
-  if stack:
-    plt.figure(figsize=(5,15))
-    output = np.vstack([orig, heatmap, output])
-  else:
-    plt.figure(figsize=figsize)
+#   if stack:
+#     plt.figure(figsize=(5,15))
+#     output = np.vstack([orig, heatmap, output])
+#   else:
+#     plt.figure(figsize=figsize)
 
-  output = imutils.resize(output, height=1400)
+#   output = imutils.resize(output, height=1400)
   
-  plt.imshow(output[:,:,::-1])
-  if len(classnames) > 2:
-    pred_prob = [pred for pred in preds[0] if pred > 0.5]
-    plt.title('predicted_probs:' + str(pred_prob) )
-    pred_list = [pred for pred in preds[0]]
-    figures['pred'] = [multilabel_header, pred_list]
-    return figures
+#   plt.imshow(output[:,:,::-1])
+#   if len(classnames) > 2:
+#     pred_prob = [pred for pred in preds[0] if pred > 0.5]
+#     plt.title('predicted_probs:' + str(pred_prob) )
+#     pred_list = [pred for pred in preds[0]]
+#     figures['pred'] = [multilabel_header, pred_list]
+#     return figures
 
-  else:
-    plt.title('predicted_label:' + predicted_label  + ", Prob: " + str(preds[0][0]))
-    figures['pred'] = preds[0][0]
+#   else:
+#     plt.title('predicted_label:' + predicted_label  + ", Prob: " + str(preds[0][0]))
+#     figures['pred'] = preds[0][0]
 
-    return figures
+  return preds[0][0], heatmap
 

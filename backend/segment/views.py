@@ -103,22 +103,31 @@ def classificationWithGradcam_view(request):
 
     #load saved Binary model
     print("Binary Classification Started...")
-    BinaryModel = keras.models.load_model('segment/models/binary.h5')
+    BinaryModel = keras.models.load_model('segment/models/best_model_densenet201.h5')
     
     #predict
-    gradcamBinary = plot_GradCAM(BinaryModel, img_dcom,['Normal', 'Abnormal'], base_line_model_index = 2 ,stack=True, layerName = 'conv5_block3_out')
-    binaryPred = gradcamBinary['pred']
+    binaryPred, binaryHeatmap = plot_GradCAM(BinaryModel, img_dcom,['Normal', 'Abnormal'], base_line_model_index = 2 ,stack=True) #, layerName = 'conv5_block3_out'
+    
     print("Binary Model Finished...")
     
     #load saved Multilabel model
     Multilabel = keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
   
+    multiPred = None
     if binaryPred > 0.5:
         print("Multilabel Classification Started...")
-        gradcamMulti  = plot_GradCAM(Multilabel, img_dcom, ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural'],class_idx=4, base_line_model_index = 2 ,stack=True, layerName = 'conv5_block16_concat', colormap=cv2.COLORMAP_HOT)
+        img = preprocess_img_bone(img_dcom)
+        img = tf.image.resize(img, (224,224))
+        img = tf.expand_dims(img, axis=0)
+        
+        # gradcamMulti  = plot_GradCAM(Multilabel, img_dcom, ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural'],class_idx=4, base_line_model_index = 2 ,stack=True, colormap=cv2.COLORMAP_HOT) #layerName = 'conv5_block16_concat',
+        multiPred = Multilabel.predict(img)
         print("Multilabel Model Finished...")
         
-    else:
-        gradcamMulti = None
 
-    return Response(gradcamBinary, gradcamMulti)
+    stretched_heatmap = map_to_whole_image_range(binaryHeatmap)
+    coded_heatmap = encode_img_to_string(stretched_heatmap)
+
+    print("binaryPred:", binaryPred)
+    print("multiPred:",multiPred)
+    return Response({"binaryPred": binaryPred, "multiPred": multiPred, "binaryHeatmap": coded_heatmap}) 
