@@ -15,7 +15,8 @@ const Histogram = (props) => {
       ]}
       layout={{
         title: "Intensity Distribution Histogram",
-        autosize: true,
+        // autosize: true,
+        height: 250,
         margin: {
           t: 30,
           b: 20.5,

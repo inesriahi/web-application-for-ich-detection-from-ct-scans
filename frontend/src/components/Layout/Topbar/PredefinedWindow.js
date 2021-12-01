@@ -10,7 +10,7 @@ const PredefinedWindow = () => {
   const dispatch = useDispatch();
 
   const predefinedWindows = {
-    Soft: { wc: "40", ww: "80" },
+    Brain: { wc: "40", ww: "80" },
     Subdural: { wc: 60, ww: 200 },
     Stroke: { wc: 40, ww: 40 },
     Bone: { wc: 700, ww: 4000 },

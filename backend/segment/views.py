@@ -17,8 +17,11 @@ import cv2
 
 # initialize global variables
 img_dcom = None
-windowCenter = None
-windowWidth = None
+windowCenter = 40
+windowWidth = 80
+BinaryModel = keras.models.load_model('segment/models/best_model_densenet201.h5')
+Multilabel = keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
+
 
 # Create your views here.
 class DocumentViewSet(viewsets.ModelViewSet):
@@ -31,9 +34,10 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
         img.seek(0)
         img_dcom = pydicom.dcmread(img)
-        print(np.max(img_dcom.pixel_array), np.min(img_dcom.pixel_array))
-        stretched_image = map_to_whole_image_range(img_dcom.pixel_array)
-        print(np.max(stretched_image), np.min(stretched_image))
+
+        min_value,max_value = get_min_max_of_window_value(windowCenter,windowWidth)
+        windowd_image = get_hounsfield_window(img_dcom, min_value, max_value)
+        stretched_image = map_to_whole_image_range(windowd_image)
 
         ################# IMAGE PREPARATION FOR SENDING ##################
         coded_image = encode_img_to_string(stretched_image)
@@ -103,7 +107,6 @@ def classificationWithGradcam_view(request):
 
     #load saved Binary model
     print("Binary Classification Started...")
-    BinaryModel = keras.models.load_model('segment/models/best_model_densenet201.h5')
     
     #predict
     binaryPred, binaryHeatmap = plot_GradCAM(BinaryModel, img_dcom,['Normal', 'Abnormal'], base_line_model_index = 2 ,stack=True) #, layerName = 'conv5_block3_out'
@@ -111,7 +114,6 @@ def classificationWithGradcam_view(request):
     print("Binary Model Finished...")
     
     #load saved Multilabel model
-    Multilabel = keras.models.load_model('segment/models/multilabel.h5', custom_objects={"single_class_crossentropy": np_multilabel_loss})
   
     multiPred = None
     if binaryPred > 0.5:
