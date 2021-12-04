@@ -580,15 +580,10 @@ input[type="number"] {
   right: 0;
 }
 
-.main .right-sidebar .right-sidebar-content .header {
-  margin-bottom: 20px;
-}
-
 .main .right-sidebar .right-sidebar-content .header .title h1 {
   color: var(--white);
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
   color: var(--white);
   width: 100%;
   text-align: center;
@@ -751,14 +746,25 @@ input[type="number"] {
 
 
 /*************** RIGHTSIDEBAR TABLE ******************/
+.right-sidebar-content {
+  display: grid;
+  grid-template-rows: 50px 1fr;
+}
+.right-sidebar-content .body {
+  display: grid;
+  grid-template-rows: 250px 1fr;
+  overflow-y: auto;
+}
 
 .right-sidebar-content .histogram {
-  height: calc(100% - 350);
+  max-height: 250px;
+  overflow: hidden;
 }
 
 .right-sidebar-content .table {
-  height: 350px;
-  overflow-y: auto;
+  height: 80%;
+  grid-row: 2;
+  overflow-y: scroll;
 }
 
 .right-sidebar-content .table div {

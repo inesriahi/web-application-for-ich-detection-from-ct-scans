@@ -114,7 +114,6 @@ class GradCAM:
         return (heatmap, output)
 
 def plot_GradCAM(model, image_dcom,classnames,base_line_model_index, class_idx= None, layerName=None, colormap=cv2.COLORMAP_MAGMA, stack=False, figsize=(10,10), alpha = 0.5):
-  multilabel_header = ['epidural', 'intraparenchymal', 'intraventricular', 'subarachnoid', 'subdural']
   figures = dict()
   image = preprocess_img_soft(image_dcom)
   orig = image.numpy()
