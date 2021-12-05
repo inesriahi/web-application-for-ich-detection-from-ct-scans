@@ -29,6 +29,14 @@ class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
  
     def create(self, request):
+        """This fuction read .dcm image, extract metadata, and map it to whole range
+
+        Args:
+            request ([type]): [description]
+
+        Returns:
+            HttpResponse
+        """
         global img_dcom
         img = request.data['dcmimg']
 
@@ -56,6 +64,14 @@ class DocumentViewSet(viewsets.ModelViewSet):
         
 @api_view(['POST'])
 def segment_img_view(request):
+    """This function applys segmentation request
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        Dictionary: dictionary containing segmentated image, statistical features of ROI , ROI histogram
+    """
     if request.method.upper() == 'POST':
         coors = request.data['coors']
 
@@ -91,6 +107,14 @@ def segment_img_view(request):
 
 @api_view(['POST'])
 def windowing_view(request):
+    """This function modifies window levels as requested by the user
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        HttpResponse
+    """
     global windowCenter, windowWidth
     windowCenter = int(request.data['windowCenter'])
     windowWidth = int(request.data['windowWidth'])
@@ -104,6 +128,14 @@ def windowing_view(request):
 
 @api_view(['POST'])
 def classificationWithGradcam_view(request):
+    """ This function applies classification and sends classification results with Gradcam
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        Dictionary: dictionary containing binary predictions, multilabel predictions, and binary Heatmap
+    """
 
     #load saved Binary model
     print("Binary Classification Started...")
