@@ -32,7 +32,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
         """This fuction read .dcm image, extract metadata, and map it to whole range
 
         Args:
-            request ([type]): [description]
+            request
 
         Returns:
             HttpResponse
@@ -67,7 +67,7 @@ def segment_img_view(request):
     """This function applys segmentation request
 
     Args:
-        request ([type]): [description]
+        request 
 
     Returns:
         Dictionary: dictionary containing segmentated image, statistical features of ROI , ROI histogram
@@ -110,7 +110,7 @@ def windowing_view(request):
     """This function modifies window levels as requested by the user
 
     Args:
-        request ([type]): [description]
+        request
 
     Returns:
         HttpResponse
@@ -131,7 +131,7 @@ def classificationWithGradcam_view(request):
     """ This function applies classification and sends classification results with Gradcam
 
     Args:
-        request ([type]): [description]
+        request 
 
     Returns:
         Dictionary: dictionary containing binary predictions, multilabel predictions, and binary Heatmap
