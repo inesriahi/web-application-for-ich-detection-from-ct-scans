@@ -71,6 +71,7 @@ const Classification = () => {
           openTooltip="Classification Results"
           openIconClass="fas fa-percentage"
           width="400px"
+          style={{display: "block"}}
         >
           {/* Display classification button when it not loading and not classified */}
           {isClassificationLoading && !isClassificationClassified && (

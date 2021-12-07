@@ -747,7 +747,7 @@ input[type="number"] {
 
 /*************** RIGHTSIDEBAR TABLE ******************/
 .right-sidebar-content {
-  display: grid;
+  /* display: grid; */
   grid-template-rows: 50px 1fr;
 }
 .right-sidebar-content .body {
