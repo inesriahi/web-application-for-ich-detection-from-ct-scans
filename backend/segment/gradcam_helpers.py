@@ -2,7 +2,7 @@ from tensorflow.keras.models import Model
 import tensorflow as tf
 import numpy as np
 import cv2
-import imutils
+# import imutils
 import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import load_img
