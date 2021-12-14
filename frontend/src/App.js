@@ -25,12 +25,13 @@ function App() {
           <Route path={EXPLORATION} exact>
             <Exploration />
           </Route>
-          <Route path={SEGMENTATION} exact>
-            <Segmentation />
-          </Route>
           <Route path={CLASSIFICATION} exact>
             <Classification />
           </Route>
+          <Route path={SEGMENTATION} exact>
+            <Segmentation />
+          </Route>
+          
           <Redirect to="/" />
         </Switch>
       </Layout>
