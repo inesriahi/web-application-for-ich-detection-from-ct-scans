@@ -114,7 +114,7 @@ def normalize(channel, wc_ww: tuple, norm_type = 'none'):
         resulted_channel = (channel - mini) / (maxi - mini)
         return resulted_channel
     
-def bsb_window(img):
+def bsb_window(img, third_window):
     '''
     this function preprocesses the DICOM image
 
@@ -124,28 +124,47 @@ def bsb_window(img):
         Returns:
         - bsb_image: image array after preproessing  
     '''
+    if third_window == "bone":
+        third = (600, 2000)
+    else:
+        third = (50, 350)
+
     bsb_config = {'brain': (40,80),     # brain channel
              'subdural': (80,200),      # subdural channel
-             'bone': (600, 2000)}       # bone channel
+             third_window: third}       # bone channel
 
     brain_img = window_image(img, *bsb_config['brain'])         # image with brain channel
     subdural_img = window_image(img,*bsb_config['subdural'])    # image with subdural channel
-    bone_img = window_image(img, *bsb_config['bone'])           # image with bone channel
+    third_img = window_image(img, *bsb_config[third_window])           # image with bone channel
     
     brain_img = normalize(brain_img, bsb_config['brain'], 'min_max')                # normalize image with brain channel
     subdural_img = normalize(subdural_img, bsb_config['subdural'], 'min_max')       # normalize image with subdural channel
-    bone_img = normalize(bone_img, bsb_config['bone'], 'min_max')                   # normalize image with bone channel
+    third_img = normalize(third_img, bsb_config[third_window], 'min_max')                   # normalize image with bone channel
 
     # preprocessed image
     bsb_img = np.zeros((brain_img.shape[0], brain_img.shape[1], 3)) 
     bsb_img[:, :, 0] = brain_img
     bsb_img[:, :, 1] = subdural_img
-    bsb_img[:, :, 2] = bone_img
+    bsb_img[:, :, 2] = third_img
     
     if (np.any(np.isnan(bsb_img))):
         bsb_img = np.ones((*IMAGE_SIZE,3)) # reshape image 
         
     return bsb_img
+
+def preprocess_img_soft(dcm):
+  if (dcm.BitsStored == 12) and (dcm.PixelRepresentation == 0) and (int(dcm.RescaleIntercept) > -100):
+          correct_dcm(dcm)
+  img = bsb_window(dcm, third_window="soft")
+  img = tf.convert_to_tensor(img, dtype=tf.float64)
+  return img
+
+def preprocess_img_bone(dcm):
+  if (dcm.BitsStored == 12) and (dcm.PixelRepresentation == 0) and (int(dcm.RescaleIntercept) > -100):
+          correct_dcm(dcm)
+  img = bsb_window(dcm, third_window="bone")
+  img = tf.convert_to_tensor(img, dtype=tf.float64)
+  return img
         
 def np_multilabel_loss(class_weights=None):
     '''

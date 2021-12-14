@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { BoxLoading } from "react-loadingg";
@@ -9,16 +9,18 @@ import { CLASSIFY_URL } from "../../global/endpoints.js";
 import ResultItem from "./ResultItem.js";
 import RightSidebar from "../../components/Layout/RightSidebar/index.js";
 import LoadingContainer from "../../components/Extensions/LoadingContainer.js";
-import { classificationActions } from "../../store/index.js";
+import { classificationActions, segmentedActions } from "../../store/index.js";
 import DragAndDrop from "../../components/Extensions/DragAndDrop";
 import useImageUploader from "../../hooks/useImageUploader";
 
 const Classification = () => {
   const dispatch = useDispatch();
   const imgUploader = useImageUploader();
+  const [opacity, setOpacity] = useState(50);
 
   // load the necessary data from redux store
   const loadedImg = useSelector((state) => state.img.img);
+  const gradCamImg = useSelector((state) => state.classification.gradcam);
   const isLoadedImage = useSelector((state) => state.img.isLoadedImg);
   const binaryPred = useSelector((state) => state.classification.binaryPred);
   const multiPred = useSelector((state) => state.classification.multiPred);
@@ -38,7 +40,7 @@ const Classification = () => {
       .post(CLASSIFY_URL)
       .then((res) => {
         const data = res.data;
-        dispatch(classificationActions.setBinaryPred(data.binaryPred[0]));
+        dispatch(classificationActions.setBinaryPred(data.binaryPred));
         dispatch(
           classificationActions.setMultiPred(
             data.multiPred ? data.multiPred[0] : null
@@ -46,6 +48,9 @@ const Classification = () => {
         );
         dispatch(classificationActions.setIsLoading(false));
         dispatch(classificationActions.setIsClassified(true));
+
+        /**** To change */
+        dispatch(classificationActions.setGradcam(data.binaryHeatmap));
       })
       .catch((err) => {
         console.log(err);
@@ -68,6 +73,7 @@ const Classification = () => {
           openTooltip="Classification Results"
           openIconClass="fas fa-percentage"
           width="400px"
+          style={{display: "block"}}
         >
           {/* Display classification button when it not loading and not classified */}
           {isClassificationLoading && !isClassificationClassified && (
@@ -81,20 +87,41 @@ const Classification = () => {
             </button>
           )}
           {!isClassificationLoading && isClassificationClassified && (
-            <ul className="classification-list">
-              <ResultItem name="Abnormality" percent={binaryPred} />
-              {l.length > 0 ? l : null}
-            </ul>
+            <>
+              <ul className="classification-list">
+                <ResultItem name="Abnormality" percent={binaryPred} />
+                {l.length > 0 ? l : null}
+              </ul>
+              <div class="slidecontainer" style={{ marginTop: "30px" }}>
+                <p style={{ color: "white" }}>GradCam slider:</p>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={opacity}
+                  className="slider"
+                  id="myRange"
+                  onChange={(e) => setOpacity(e.target.value)}
+                />
+              </div>
+            </>
           )}
         </RightSidebar>
       )}
 
-        <DragAndDrop active={!isLoadedImage} uploader={imgUploader}>
-          {isLoadedImage && (
+      <DragAndDrop active={!isLoadedImage} uploader={imgUploader}>
+        {isLoadedImage && (
+          <>
             <img src={`data:image/png;base64,${loadedImg}`} alt="DICOM file" />
-          )}
-        </DragAndDrop>
-
+            {isClassificationClassified && !isClassificationLoading && (
+              <img
+                src={`data:image/png;base64,${gradCamImg}`}
+                style={{ position: "absolute", opacity: `${opacity / 100}` }}
+              />
+            )}
+          </>
+        )}
+      </DragAndDrop>
     </>
   );
 };

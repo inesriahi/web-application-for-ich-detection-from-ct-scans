@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/segment/', views.segment_img_view),
     path('api/windowing/', views.windowing_view),
-    path('api/classify/', views.classification_view),
+    path('api/classify/', views.classificationWithGradcam_view),
     path('api/', include(router.urls)),
 ]
 

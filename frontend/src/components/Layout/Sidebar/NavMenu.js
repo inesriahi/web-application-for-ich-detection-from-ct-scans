@@ -9,8 +9,8 @@ const NavMenu = () => {
     <ul className="nav-list">
         <UploadForm />
         <NavElement iconClass="fas fa-camera" name = "Exploration" to={EXPLORATION}/>
-        <NavElement iconClass="fas fa-scissors" name = "Segmentation" to={SEGMENTATION}/>
         <NavElement iconClass="fas fa-project-diagram" name = "Classification" to={CLASSIFICATION}/>
+        <NavElement iconClass="fas fa-scissors" name = "Segmentation" to={SEGMENTATION}/>
       </ul>
   );
 };
