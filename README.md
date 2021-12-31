@@ -23,8 +23,37 @@ Our approach consists of two main parts. The first part aims to perform region g
 The project provides an employable solution for radiologists to assess in diagnosing and treating Intracranial Hemorrhage with a simple web application.The project enhances the medical procedure to treat Intracranial hemorrhage and accelerates the diagnosis process.
 
 ### Usage 
-1. Create new environment
-2. 
+
+#### **Backend**
+1. Create new environment and install dependencies:
+
+    a. usinng pip
+
+    ```python -m venv venv```
+
+    ```pip install -r requirements.txt```
+    
+    b. using anaconda
+
+    ```python -m venv venv```
+
+    ```conda install --file requirements.txt```
+
+3. Start the Django web server
+    
+    ```cd backend ```
+    
+    ```python manage.py runserver```
+
+#### **Frontend**
+4. Open a new terminal and start the node server
+
+    ```cd frontend ```
+    
+     ``` npm install```     (only if this is your first time to use the app)
+    
+    ``` npm start```
+
 
 #### `npm start`
 
