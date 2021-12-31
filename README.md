@@ -35,18 +35,17 @@ AI-empowered web-based applicatoin for Intracranial Hemorrhage (ICH) Detection u
 
 1. **Create new python environment and install dependencies:**
 
-    a. *Option 1:* using pip
-        ```python -m venv venv```
+    a. *Option 1:* using pip <br>
+        ```python -m venv venv```<br>
         ```pip install -r requirements.txt```
     
-    b. *Option 2:* using anaconda
-        ```python -m venv venv```
+    b. *Option 2:* using anaconda <br>
+        ```python -m venv venv```<br>
         ```conda install --file requirements.txt```
 
 2. **Start the Django web server from `backend` directory**
     
-    ```cd backend ```
-    
+    ```cd backend ```<br>
     ```python manage.py runserver```
 
 3. **Open a new terminal and start the node server in `frontend` directory**
