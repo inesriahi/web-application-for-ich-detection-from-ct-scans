@@ -1,0 +1,9 @@
+Pillow
+pydicom
+matplotlib
+django
+numpy
+tensorflow
+django-cors-headers
+djangorestframework
+pyradiomics
