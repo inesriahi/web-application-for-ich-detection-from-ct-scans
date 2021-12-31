@@ -23,7 +23,8 @@ Our approach consists of two main parts. The first part aims to perform region g
 The project provides an employable solution for radiologists to assess in diagnosing and treating Intracranial Hemorrhage with a simple web application.The project enhances the medical procedure to treat Intracranial hemorrhage and accelerates the diagnosis process.
 
 ### Usage 
-
+1. Create new environment
+2. 
 
 ### `npm start`
 
