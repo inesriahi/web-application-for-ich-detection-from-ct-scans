@@ -8,6 +8,7 @@
 </p>
 
 <p align="center">
+
 *AI-empowered web-based applicatoin for Intracranial Hemorrhage (ICH) Detection using CT scans*
 ## ScanLens aims to assist radiologists to detect ICH
 * Hemorrhage Classification to the 5 subtypes
