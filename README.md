@@ -1,9 +1,23 @@
+# ScanLens
+*AI-empowered web-based applicatoin for Intracranial Hemorrhage (ICH) Detection using CT scans*
+## ScanLens aims to assist radiologists to detect ICH
+* Hemorrhage Classification to the 5 subtypes
+* Hemorrhage Segmentation
+
+
+### Tour
+<img src="./Images/tour.gif" alt="" width="100%"/>
+<p align="center">
+<small align="center" >ScanLens Tour</small>
+</p>
 ### Context and Problem Statement
 Intracranial hemorrhage or ICH is bleeding that occurs inside the brain or skull. It’s a serious condition and requires urgent treatment and accurate diagnosis, otherwise, delay in treatment or miss-diagnosing can cause severe side effects. Based on the location of the hemorrhage, ICH is divided into five subtypes which are intraparenchymal, intraventricular, subarachnoid, subdural, and epidural.
 If a stroke due to brain bleeding has occurred, the cause must be determined so that the appropriate treatment can be started. Prompt medical treatment can help limit damage to the brain, which will improve your chances of recovery. However, identifying the location and type of any bleeding present is a critical step in the treatment of the patient. The process of examining CT scans of the patient's skull for the presence, location, and type of bleeding requires highly trained specialists and is often complicated and time-consuming.
     
 <img src="./Images/ICH_subtypes.png" alt="" width="100%"/>
-<small align="center" >ICH Subtypes</small>
+<p align="center">
+<small align="center" >Intracranial Hemorrhage Subtypes</small>
+</p>
 
 
 ### Objectives
@@ -12,7 +26,9 @@ The objective of the project is to design an AI (deep learning) powered web plat
 2. Provide an interactive interface to allow them to extract statistical biomarkers from affected areas of the brain image using image segmentation techniques.
 
 <img src="./Images/objectives.png" alt="" width="100%"/>
+<p align="center">
 <small align="center" >Project Objectives</small>
+</p>
 
 
 
