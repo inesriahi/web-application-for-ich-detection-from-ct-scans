@@ -11,7 +11,7 @@ AI-empowered web-based applicatoin for Intracranial Hemorrhage (ICH) Detection u
 <img src="https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white&style=flat" alt="Reactjs"/>
 <img src="https://img.shields.io/badge/-Django-092E20?logo=django&logoColor=white&style=flat" alt="Django"/>
 <img src="https://img.shields.io/badge/-npm%20v6.14.13-CB3837?logo=npm&logoColor=white&style=flat" alt="npm"/>
-<img src="https://img.shields.io/badge/-Common Clauses License-000000" alt="npm"/>
+<img src="https://img.shields.io/badge/-Commons Clause License-000000" alt="npm"/>
 </p>
 
 <p align="center">
