@@ -26,10 +26,20 @@ The project provides an employable solution for radiologists to assess in diagno
 1. Create new environment
 2. 
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+
+### Authors
+<table>
+<tr>
+<td align="center"><a href="https://github.com/inesriahi"><img src="https://github.com/inesriahi.png" width="50px;" alt=""/><br /><sub><b>Ines<br/>Riahi</b></sub></td>
+<td align="center"><a href="https://github.com/Shidhani"><img src="https://github.com/Shidhani.png" width="50px;" alt=""/><br /><sub><b>Aafaq<br/>Al Shidhani</br></sub></td>
+<td align="center"><a href="https://github.com/maimuna99"><img src="https://github.com/maimuna99.png" width="50px;" alt=""/><br /><sub><b>Maimoona<br/>Al Wahaibi</br></sub></td>
+<td align="center"><a href="https://github.com/Nuha28"><img src="https://github.com/Nuha28.png" width="50px;" alt=""/><br /><sub><b>Nuha<br/>Al Rasbi</br></sub></td>
+</table>
