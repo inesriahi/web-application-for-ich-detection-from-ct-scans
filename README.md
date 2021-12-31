@@ -1,5 +1,28 @@
-## Overview
-We have built a model, after too many experiments for many state-of-art architectures, that could detect the presence of the bleed as well as its type if it exists. Our best performing model could achieve a 0.75 f1-score on the test dataset. Not only this, but we have also added a feature of manual segmentation of the hemorrhage and allowed radiologists to get over 100 texture analysis features to allow further analysis of the segmented region along with its related histogram. This project greatly strengthened my knowledge about using Deep Learning for medical data and approached me to learn much about the artificial intelligence tools used in this discipline. In addition to this, I also gained deeper knowledge about the methods used to interpret CNN model results by plotting GradCAMs, which are heatmaps to highlight the important regions that contributed to the classification results. A very important addition to this project was that we have built a web interface, using ReactJS for the frontend and Django for the backend to better represent our results to make it accessible for radiologists.      
+### Context and Problem Statement
+Intracranial hemorrhage or ICH is bleeding that occurs inside the brain or skull. It’s a serious condition and requires urgent treatment and accurate diagnosis, otherwise, delay in treatment or miss-diagnosing can cause severe side effects. Based on the location of the hemorrhage, ICH is divided into five subtypes which are intraparenchymal, intraventricular, subarachnoid, subdural, and epidural.
+If a stroke due to brain bleeding has occurred, the cause must be determined so that the appropriate treatment can be started. Prompt medical treatment can help limit damage to the brain, which will improve your chances of recovery. However, identifying the location and type of any bleeding present is a critical step in the treatment of the patient. The process of examining CT scans of the patient's skull for the presence, location, and type of bleeding requires highly trained specialists and is often complicated and time-consuming.
+    
+<img src="./Images/ICH_subtypes.png" alt="" width="100%"/>
+<small align="center" >ICH Subtypes</small>
+
+
+### Objectives
+The objective of the project is to design an AI (deep learning) powered web platform to assist clinicians to:
+1. Predict the presence of hemorrhage from CT scan image using Deep learning approach (CNN and its variants).
+2. Provide an interactive interface to allow them to extract statistical biomarkers from affected areas of the brain image using image segmentation techniques.
+
+<img src="./Images/objectives.png" alt="" width="100%"/>
+<small align="center" >Project Objectives</small>
+
+
+
+### Method
+Our approach consists of two main parts. The first part aims to perform region growing-based image segmentation to segment the damaged region of the brain, extracts biomarker features using the PyRadiomics package and compute the histogram distribution from the intensity of the segmented region. The second part aims to develop a CNN model to predict the abnormality from the CT scan images. On top of this, a Multi-label CNN Model is developed to predict the probabilities of the subtype(s) if an abnormality is discovered. Finally, the classified images are  analyzed visually using the GradCam tool. A web application is also created with ReactJS on the front end, Django on the back end and REST API for communication between the front and back ends to assist the clinician in the analysis of CT scan images.
+
+### Impact
+The project provides an employable solution for radiologists to assess in diagnosing and treating Intracranial Hemorrhage with a simple web application.The project enhances the medical procedure to treat Intracranial hemorrhage and accelerates the diagnosis process.
+
+### Usage 
 
 
 #### `npm start`
