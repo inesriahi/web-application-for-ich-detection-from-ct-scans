@@ -85,3 +85,6 @@ The project provides an employable solution for radiologists to assess in diagno
 <td align="center"><a href="https://github.com/maimuna99"><img src="https://github.com/maimuna99.png" width="50px;" alt=""/><br /><sub><b>Maimoona<br/>Al Wahaibi</br></sub></td>
 <td align="center"><a href="https://github.com/Nuha28"><img src="https://github.com/Nuha28.png" width="50px;" alt=""/><br /><sub><b>Nuha<br/>Al Rasbi</br></sub></td>
 </table>
+    
+## Supervisor
+Dr. Rachid Hedjam
